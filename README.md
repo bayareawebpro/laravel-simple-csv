@@ -9,7 +9,7 @@
 ### Default Options for Delimiter, Enclosure & Escape
 ```
 SimpleCsv::import($path = '/some/file.csv', $delimiter = ",", $enclosure = "\"", $escape = "\\");
-SimpleCsv::export($path = '/some/file.csv', $delimiter = ",", $enclosure = "\"", $escape = "\\");
+SimpleCsv::export($collection, $delimiter = ",", $enclosure = "\"", $escape = "\\");
 ```
 
 ### Import to Collection
