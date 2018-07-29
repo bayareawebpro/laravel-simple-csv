@@ -62,8 +62,16 @@ A file splitting utility has been included that will break large CSV files into 
 (while retaining column headers) which you can move/delete after importing. 
 This can help with automating the import of large data sets.
 
+Tip: Find your Bash Shell Binary Path: ``$ which sh``
+
 ```
 /bin/sh vendor/bayareawebpro/laravel-simple-csv/split-csv.sh /Projects/laravel/storage/big-file.csv 5000
+
+File Output:
+/Projects/laravel/storage/big-file-chunk-1.csv (chunk of 5000)
+/Projects/laravel/storage/big-file-chunk-2.csv (chunk of 5000)
+/Projects/laravel/storage/big-file-chunk-3.csv (chunk of 5000)
+etc...
 ```
 
 
