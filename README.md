@@ -1,10 +1,17 @@
 ![Laravel Simple CSV](https://cdn.rawgit.com/bayareawebpro/laravel-simple-csv/f1418824/screenshot.png "Logo Title Text 1")
 
+
 # Simple CSV for Laravel
 - Import to Collection - Export from Collection.
 - Low(er) Memory Consumption by use of Generators.
 - Uses Native PHP SplFileObject.
 - Facades Included.
+
+## Installation
+Simply require the package and Laravel will Auto-Discover the Service Provider.
+```
+composer require bayareawebpro/laravel-simple-csv
+```
 
 ## Usage:
 
@@ -58,6 +65,7 @@ This can help with automating the import of large data sets.
 ```
 /bin/sh vendor/bayareawebpro/laravel-simple-csv/split-csv.sh /Projects/laravel/storage/big-file.csv 5000
 ```
+
 
 #### Speed Tips
 - Queries are much faster if you specify the exact fields needed in the `get()` method.
