@@ -15,12 +15,6 @@ composer require bayareawebpro/laravel-simple-csv
 
 ## Usage:
 
-### Default Options for Delimiter, Enclosure & Escape
-```
-SimpleCsv::import($path = '/some/file.csv', $delimiter = ",", $enclosure = "\"", $escape = "\\");
-SimpleCsv::export($collection, $delimiter = ",", $enclosure = "\"", $escape = "\\");
-```
-
 ### Import to Collection
 Specify the path when calling the import method on the facade.
 ```
@@ -57,7 +51,13 @@ Route::get('/download-csv', function() {
 
 ```
 
-#### FileSplitting Utility
+### Extended Options
+```
+SimpleCsv::import($path = '/some/file.csv', $delimiter = ",", $enclosure = "\"", $escape = "\\");
+SimpleCsv::export($collection, $delimiter = ",", $enclosure = "\"", $escape = "\\");
+```
+
+### FileSplitting Utility
 A file splitting utility has been included that will break large CSV files into chunks 
 (while retaining column headers) which you can move/delete after importing. 
 This can help with automating the import of large data sets.
