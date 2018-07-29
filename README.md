@@ -1,4 +1,4 @@
-![Laravel Simple CSV](https://cdn.rawgit.com/bayareawebpro/laravel-simple-csv/f1418824/screenshot.png "Logo Title Text 1")
+![Laravel Simple CSV](https://cdn.rawgit.com/bayareawebpro/laravel-simple-csv/97d15ca6/screenshot.png "Laravel Simple CSV")
 
 
 # Simple CSV for Laravel
