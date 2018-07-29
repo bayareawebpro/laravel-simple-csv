@@ -4,6 +4,10 @@
 - Uses Native PHP SplFileObject.
 - Facades Included.
 
+##Documentation
+[View the API Documentation](https://cdn.rawgit.com/bayareawebpro/laravel-simple-csv/1737e6a4/_docs/index.html)
+
+
 ####DebugBar Time
 Here's an extreme example that show what's possible in under 1 second when we push things to the limit.
 
