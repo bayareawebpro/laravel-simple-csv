@@ -1,7 +1,6 @@
 {
     "name": "bayareawebpro/laravel-simple-csv",
     "description": "A simple CSV importer/ exporter for Laravel.",
-    "version": "1.0",
     "license": "MIT",
     "authors": [
         {
