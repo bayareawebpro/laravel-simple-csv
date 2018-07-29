@@ -16,15 +16,15 @@ composer require bayareawebpro/laravel-simple-csv
 ## Usage:
 
 ### Import to Collection
-Specify the path when calling the import method on the facade.
+1) Pass a path to the import method which returns the collection of parsed entries.
 ```
 use SimpleCsv;
 
 $collection = SimpleCsv::import(storage_path('table.csv'));
 ```
 ### Export from Collection to File
-Pass a collection in the export method.
-Specify the path when you call the chained save method.
+1) Pass a collection to the export method, which returns the chained save method. 
+2) Specify the path when you call the save method.
 ```
 use SimpleCsv;
 use DB;
@@ -36,19 +36,21 @@ $exporter = SimpleCsv::export($collection);
 $exporter->save(storage_path('table.csv'));
 ```
 ### Export from Collection to Download Stream
+1) Pass a collection to the export method, which returns the chained download response streamer. 
+2) Specify the filename when you call the download method.
+3) Return the response provided by the download method.
 ```
 use SimpleCsv;
 use DB;
 
-Route::get('/download-csv', function() {
-
+public function download(Request $request)
+{
     $collection = DB::table('users')->get(['id', 'name', 'email']);
-
+    
     $exporter = SimpleCsv::export($collection);
     
-    return $export->download('table.csv');
-});
-
+    return $exporter->download('table.csv');
+}
 ```
 
 ### Extended Options
