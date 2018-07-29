@@ -50,6 +50,15 @@ Route::get('/download-csv', function() {
 
 ```
 
+#### FileSplitting Utility
+A file splitting utility has been included that will break large CSV files into chunks 
+(while retaining column headers) which you can move/delete after importing. 
+This can help with automating the import of large data sets.
+
+```
+/bin/sh vendor/bayareawebpro/laravel-simple-csv/split-csv.sh /Projects/laravel/storage/big-file.csv 5000
+```
+
 #### Speed Tips
 - Queries are much faster if you specify the exact fields needed in the `get()` method.
 - Using the DB Facade instead of Eloquent can yield faster results.
