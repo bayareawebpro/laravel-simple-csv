@@ -80,7 +80,7 @@ etc...
 ```
 
 ## Speed Tips
-- Queries are much faster if you specify the exact fields needed in the `get()` method.
+- Queries are faster when you specify fields in the `get()` or `select()` method.
 - Using the DB Facade instead of Eloquent can yield faster results.
 - Using the queue worker, you can import a several thousand rows at a time without much impact.
 - Be sure to use "Database Transactions", "Chunking" and "Timeout Detection" to insure safe imports.
