@@ -1,7 +1,10 @@
 ![Laravel Simple CSV](https://cdn.rawgit.com/bayareawebpro/laravel-simple-csv/97d15ca6/screenshot.png "Laravel Simple CSV")
 
-
 # Simple CSV for Laravel
+[![Generic badge](https://img.shields.io/badge/Build-Passing-ok.svg)]()
+[![Generic badge](https://img.shields.io/badge/License-MIT-orange.svg)]()
+[![Generic badge](https://img.shields.io/badge/Version-1.0-blue.svg)]()
+
 - Import to Collection - Export from Collection.
 - Low(er) Memory Consumption by use of Generators.
 - Uses Native PHP SplFileObject.
