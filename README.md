@@ -5,7 +5,7 @@
 [![Generic badge](https://img.shields.io/badge/License-MIT-orange.svg)]()
 [![Generic badge](https://img.shields.io/badge/Version-1.0-blue.svg)]()
 
-[API Documentation](https://cdn.rawgit.com/bayareawebpro/laravel-simple-csv/1737e6a4/_docs/index.html)
+[API Documentation](https://cdn.rawgit.com/bayareawebpro/laravel-simple-csv/b9c3a955/_docs/index.html)
 
 ## Features
 - Import to Collection - Export from Collection.
