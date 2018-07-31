@@ -9,10 +9,11 @@ split -l "${_CHUNKS}" "${_PATH}" _LINES
 
 for _LINE in _LINES*
 do
-	if (( _INDEX > 1 )); then
+	if (( ${_INDEX} == 1 )); then
         echo ${_HEADER} > ${_DIR}/${_NAME}-chunk-${_INDEX}.csv
 	fi
 	cat ${_LINE} >> ${_DIR}/${_NAME}-chunk-${_INDEX}.csv
 	rm ${_LINE}
+	echo ${_INDEX}
 	((_INDEX++))
 done
