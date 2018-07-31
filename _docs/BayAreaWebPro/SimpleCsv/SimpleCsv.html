@@ -86,9 +86,35 @@
     
 
             <div class="description">
-            <p>The SimpleCsv Service Provider</p>                                </div>
+            <p>The SimpleCsv Facade</p>                                </div>
     
     
+            <h2>Constants</h2>
+
+            <table class="table table-condensed">
+                    <tr>
+                <td>DELIMITER</td>
+                <td class="last">
+                    <p><em></em></p>
+                    <p></p>
+                </td>
+            </tr>
+                    <tr>
+                <td>ENCLOSURE</td>
+                <td class="last">
+                    <p><em></em></p>
+                    <p></p>
+                </td>
+            </tr>
+                    <tr>
+                <td>ESCAPE</td>
+                <td class="last">
+                    <p><em></em></p>
+                    <p></p>
+                </td>
+            </tr>
+            </table>
+
     
             <h2>Properties</h2>
 
@@ -130,7 +156,7 @@
                     <abbr title="Illuminate\Support\Collection">Collection</abbr>
                 </div>
                 <div class="col-md-8 type">
-                    <a href="#method_import">import</a>($path = null, $delimiter = &quot;,&quot;, $enclosure = &quot;\&quot;&quot;, $escape = &quot;\\&quot;)
+                    <a href="#method_import">import</a>($path = null, $delimiter = self::DELIMITER, $enclosure = self::ENCLOSURE, $escape = self::ESCAPE)
         
                                             <p>Import the CSV to a new Collection</p>                </div>
                 <div class="col-md-2"></div>
@@ -140,7 +166,7 @@
                     <a href="../../BayAreaWebPro/SimpleCsv/SimpleCsvExporter.html"><abbr title="BayAreaWebPro\SimpleCsv\SimpleCsvExporter">SimpleCsvExporter</abbr></a>
                 </div>
                 <div class="col-md-8 type">
-                    <a href="#method_export">export</a>(<abbr title="Illuminate\Support\Collection">Collection</abbr> $collection, $delimiter = &quot;,&quot;, $enclosure = &quot;\&quot;&quot;, $escape = &quot;\\&quot;)
+                    <a href="#method_export">export</a>($collection, $delimiter = self::DELIMITER, $enclosure = self::ENCLOSURE, $escape = self::ESCAPE)
         
                                             <p>Import the CSV to a new Collection</p>                </div>
                 <div class="col-md-2"></div>
@@ -153,7 +179,7 @@
             <div id="method-details">
                     <div class="method-item">
                     <h3 id="method___construct">
-        <div class="location">at         <a href="https://github.com/bayareawebpro/laravel-simple-csv/blob/master/src/SimpleCsv.php#L14">line 14</a></div>
+        <div class="location">at         <a href="https://github.com/bayareawebpro/laravel-simple-csv/blob/master/src/SimpleCsv.php#L18">line 18</a></div>
         <code>                    
     <strong>__construct</strong>(<a href="../../BayAreaWebPro/SimpleCsv/SimpleCsvImporter.html"><abbr title="BayAreaWebPro\SimpleCsv\SimpleCsvImporter">SimpleCsvImporter</abbr></a> $csvImporter, <a href="../../BayAreaWebPro/SimpleCsv/SimpleCsvExporter.html"><abbr title="BayAreaWebPro\SimpleCsv\SimpleCsvExporter">SimpleCsvExporter</abbr></a> $csvExporter)
         </code>
@@ -189,9 +215,9 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_import">
-        <div class="location">at         <a href="https://github.com/bayareawebpro/laravel-simple-csv/blob/master/src/SimpleCsv.php#L28">line 28</a></div>
+        <div class="location">at         <a href="https://github.com/bayareawebpro/laravel-simple-csv/blob/master/src/SimpleCsv.php#L32">line 32</a></div>
         <code>                    <abbr title="Illuminate\Support\Collection">Collection</abbr>
-    <strong>import</strong>($path = null, $delimiter = &quot;,&quot;, $enclosure = &quot;\&quot;&quot;, $escape = &quot;\\&quot;)
+    <strong>import</strong>($path = null, $delimiter = self::DELIMITER, $enclosure = self::ENCLOSURE, $escape = self::ESCAPE)
         </code>
     </h3>
     <div class="details">
@@ -244,9 +270,9 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_export">
-        <div class="location">at         <a href="https://github.com/bayareawebpro/laravel-simple-csv/blob/master/src/SimpleCsv.php#L41">line 41</a></div>
+        <div class="location">at         <a href="https://github.com/bayareawebpro/laravel-simple-csv/blob/master/src/SimpleCsv.php#L45">line 45</a></div>
         <code>                    <a href="../../BayAreaWebPro/SimpleCsv/SimpleCsvExporter.html"><abbr title="BayAreaWebPro\SimpleCsv\SimpleCsvExporter">SimpleCsvExporter</abbr></a>
-    <strong>export</strong>(<abbr title="Illuminate\Support\Collection">Collection</abbr> $collection, $delimiter = &quot;,&quot;, $enclosure = &quot;\&quot;&quot;, $escape = &quot;\\&quot;)
+    <strong>export</strong>($collection, $delimiter = self::DELIMITER, $enclosure = self::ENCLOSURE, $escape = self::ESCAPE)
         </code>
     </h3>
     <div class="details">
@@ -260,7 +286,7 @@
 
                     <table class="table table-condensed">
                     <tr>
-                <td><abbr title="Illuminate\Support\Collection">Collection</abbr></td>
+                <td></td>
                 <td>$collection</td>
                 <td>\Illuminate\Support\Collection</td>
             </tr>
