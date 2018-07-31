@@ -20,10 +20,10 @@
     "extra": {
         "laravel": {
             "providers": [
-                "BayAreaWebPro\\SimpleCsv\\ServiceProvider"
+                "BayAreaWebPro\\SimpleCsv\\SimpleCsvServiceProvider"
             ],
             "aliases": {
-                "SimpleCsv": "BayAreaWebPro\\SimpleCsv\\Facade"
+                "SimpleCsv": "BayAreaWebPro\\SimpleCsv\\SimpleCsvFacade"
             }
         }
     }

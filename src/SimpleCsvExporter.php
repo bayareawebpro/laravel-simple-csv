@@ -1,5 +1,4 @@
 <?php namespace BayAreaWebPro\SimpleCsv;
-
 use SplFileObject;
 use Illuminate\Support\Collection;
 use Symfony\Component\HttpFoundation\StreamedResponse;
@@ -48,15 +47,8 @@ class SimpleCsvExporter
         //Get the file object.
         $csv = $this->getFileObject($path);
 
-        foreach($this->generateLines() as $index => $entry){
+        $this->loopLines($csv);
 
-            //Write the row headers.
-            if ($index === 0) $this->writeLine($csv, array_keys($this->getRow($entry)));
-
-            //Write the row entry.
-            $this->writeLine($csv, array_values($this->getRow($entry)));
-
-        }
         //Close the file.
         $csv = null;
     }
@@ -72,20 +64,30 @@ class SimpleCsvExporter
         $csv = $this->getFileObject('php://output');
 
         return new StreamedResponse(function () use ($csv) {
-            //Iterate the entries.
-            foreach($this->generateLines() as $index => $entry){
 
-                //Write the row headers.
-                if ($index === 0) $this->writeLine($csv, array_keys($this->getRow($entry)));
+            $this->loopLines($csv);
 
-                //Write the row entry.
-                $this->writeLine($csv, array_values($this->getRow($entry)));
-
-            }
         }, 200, [
             'Content-Type' => 'text/csv',
             'Content-Disposition' => "attachment; filename=\"{$filename}\"",
         ]);
+    }
+    /**
+     * Loop the lines of the file.
+     * @param $csv SplFileObject
+     * @return void
+     */
+    private function loopLines($csv)
+    {
+        //Iterate the entries.
+        foreach($this->generateLines() as $index => $entry){
+
+            //Write the row headers.
+            if ($index === 0) $this->writeLine($csv, array_keys($this->getRow($entry)));
+
+            //Write the row entry.
+            $this->writeLine($csv, array_values($this->getRow($entry)));
+        }
     }
 
     /**

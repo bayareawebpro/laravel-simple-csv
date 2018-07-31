@@ -1,10 +1,14 @@
 <?php namespace BayAreaWebPro\SimpleCsv;
 /**
- * The SimpleCsv Service Provider
+ * The SimpleCsv Facade
  */
 class SimpleCsv
 {
     protected $csvImporter, $csvExporter;
+
+    const DELIMITER = ',';
+    const ENCLOSURE = '"';
+    const ESCAPE = '\\';
 
     /**
      * SimpleCsv constructor.
@@ -25,7 +29,7 @@ class SimpleCsv
      * @param $escape string
      * @return \Illuminate\Support\Collection
      */
-    public function import($path = null, $delimiter = ",", $enclosure = "\"", $escape = "\\")
+    public function import($path = null, $delimiter = self::DELIMITER, $enclosure = self::ENCLOSURE, $escape = self::ESCAPE)
     {
         return with(new $this->csvImporter($delimiter, $enclosure, $escape))->import($path);
     }
@@ -38,7 +42,7 @@ class SimpleCsv
      * @param $escape string
      * @return SimpleCsvExporter
      */
-    public function export(\Illuminate\Support\Collection $collection, $delimiter = ",", $enclosure = "\"", $escape = "\\")
+    public function export($collection, $delimiter = self::DELIMITER, $enclosure = self::ENCLOSURE, $escape = self::ESCAPE)
     {
         return with(new $this->csvExporter($collection, $delimiter, $enclosure, $escape));
     }

@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Facade as LaravelFacade;
 /**
  * The SimpleCsv Service Facade
  */
-class Facade extends LaravelFacade
+class SimpleCsvFacade extends LaravelFacade
 {
     /**
      * Get the registered name of the component.
