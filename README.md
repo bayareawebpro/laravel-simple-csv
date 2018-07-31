@@ -120,6 +120,6 @@ DB::transaction(function() use ($chunks){
 #### DebugBar Timeline Results:
 - Import: 53,330 Rows in 951.5ms @ 63.42MB
 - Export: 53,330 Rows in 821.64ms @ 47.12MB (regular query)
-- Export: 218,443 Rows in 821.64ms @ 18.39MB (with query chunks)
+- Export: 218,443 Rows in 11.06secs @ 18.39MB (with query chunks)
 
 Test Machine: *MacPro (3.1) 2.8Ghz (Dual) Quad Core / 18GB 800Mhz FB-DIM Memory / SSD*
