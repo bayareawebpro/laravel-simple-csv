@@ -107,7 +107,7 @@ chunk-3.csv
 ### Chunk Import
 Import file into the database, but group the insert queries as chunks.
 ```
-DB::transaction(function() use ($chunks){
+DB::transaction(function(){
     $chunks = SimpleCsv::import(storage_path('table.csv'))->chunk(1000);
     $chunks->each(function($chunk){
         DB::insert($chunk->toArray());
