@@ -10,13 +10,16 @@ class SimpleCsvImporter
 {
     protected $delimiter, $enclosure, $escape;
 
+    const DELIMITER = ',';
+    const ENCLOSURE = '"';
+    const ESCAPE = '\\';
     /**
      * Importer constructor.
      * @param $delimiter string
      * @param $enclosure string
      * @param $escape string
      */
-    public function __construct($delimiter = ",", $enclosure = "\"", $escape = "\\")
+    public function __construct($delimiter = self::DELIMITER, $enclosure = self::ENCLOSURE, $escape = self::ESCAPE)
     {
         $this->delimiter = $delimiter;
         $this->enclosure = $enclosure;

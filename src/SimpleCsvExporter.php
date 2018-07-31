@@ -9,6 +9,9 @@ class SimpleCsvExporter
 {
     protected $collection, $delimiter, $enclosure, $escape;
 
+    const DELIMITER = ',';
+    const ENCLOSURE = '"';
+    const ESCAPE = '\\';
     /**
      * Importer constructor.
      * @param $collection \Illuminate\Support\Collection
@@ -16,7 +19,7 @@ class SimpleCsvExporter
      * @param $enclosure string
      * @param $escape string
      */
-    public function __construct(Collection $collection, $delimiter = ",", $enclosure = "\"", $escape = "\\")
+    public function __construct(Collection $collection, $delimiter = self::DELIMITER, $enclosure = self::ENCLOSURE, $escape = self::ESCAPE)
     {
         $this->collection = $collection->all();
         $this->delimiter = $delimiter;
