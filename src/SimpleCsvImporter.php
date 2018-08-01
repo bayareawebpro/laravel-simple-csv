@@ -29,7 +29,7 @@ class SimpleCsvImporter
     /**
      * Get The File Object
      * @param $path string
-     * @return iterable
+     * @return \Iterator
      */
     private function generateLines($path){
         //Read the file contents as csv.
@@ -48,15 +48,16 @@ class SimpleCsvImporter
      */
     public function import($path)
     {
-        $headers = array();
         $lines = array();
-        //Get the entries as a collection.
-        foreach($this->generateLines($path) as $index => $line){
-            if($index === 0){
-                $headers = $line;
-            }else{
-                array_push($lines, array_combine($headers, $line));
-            }
+        $generator = $this->generateLines($path);
+
+        //Pluck the headers.
+        $headers = $generator->current();
+        $generator->next(); //Move to first row.
+
+        while($generator->valid()){
+            array_push($lines, array_combine($headers, $generator->current()));
+            $generator->next();
         }
         return new Collection($lines);
     }

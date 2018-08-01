@@ -21,21 +21,10 @@ class SimpleCsvExporter
      */
     public function __construct(Collection $collection, $delimiter = self::DELIMITER, $enclosure = self::ENCLOSURE, $escape = self::ESCAPE)
     {
-        $this->collection = $collection->all();
+        $this->collection = $collection;
         $this->delimiter = $delimiter;
         $this->enclosure = $enclosure;
         $this->escape = $escape;
-    }
-
-    /**
-     * Read Lines
-     * @return iterable
-     */
-    public function generateLines(){
-        $total = count($this->collection)-1;
-        for($i = 0; $i <= $total;  $i++){
-            yield $this->collection[$i];
-        }
     }
 
     /**
@@ -75,6 +64,7 @@ class SimpleCsvExporter
             'Content-Disposition' => "attachment; filename=\"{$filename}\"",
         ]);
     }
+
     /**
      * Loop the lines of the file.
      * @param $csv SplFileObject
@@ -82,14 +72,15 @@ class SimpleCsvExporter
      */
     private function loopLines($csv)
     {
-        //Iterate the entries.
-        foreach($this->generateLines() as $index => $entry){
+        $generator = $this->collection->getIterator();
 
-            //Write the row headers.
-            if ($index === 0) $this->writeLine($csv, array_keys($this->getRow($entry)));
+        //Write Headers
+        $this->writeLine($csv, array_keys($this->getRow($generator->current())));
 
-            //Write the row entry.
-            $this->writeLine($csv, array_values($this->getRow($entry)));
+        //Write Rows
+        while($generator->valid()){
+            $this->writeLine($csv, array_values($this->getRow($generator->current())));
+            $generator->next();
         }
     }
 
@@ -133,7 +124,7 @@ class SimpleCsvExporter
      */
     private function getRow($entry)
     {
-        return method_exists($entry, 'getAttributes') ? $entry->getAttributes() : (array) $entry;
+        return method_exists($entry, 'toArray') ? $entry->toArray() : (array) $entry;
     }
 
 }
