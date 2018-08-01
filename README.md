@@ -116,8 +116,11 @@ DB::transaction(function(){
 ```
 
 #### DebugBar Timeline Results:
-- Import: 53,330 Rows in 951.5ms @ 63.42MB
-- Export: 53,330 Rows in 821.64ms @ 47.12MB (regular query)
-- Export: 218,443 Rows in 11.06secs @ 18.39MB (with query chunks)
+
+| Operation | Chunk  | Total Entries | Total Memory | Framework Memory | Actual Memory | Total Time | Framework Time | Actual Time |
+| :-------: | :----: | :-----------: | :----------: | :--------------: | :-----------: | :--------: | :------------: | :---------: | 
+| Import	| 10,000 | 10,000        | 15.2         | 8.09             | 7.11          | 0.311      | 0.166          | 0.145       |
+| Export	| 10,000 | 10,000        | 18.3         | 8.09             | 10.21         | 0.484      | 0.166          | 0.318       |
+| Export	| 10,000 | 221,443       | 18.09	    | 8.09             | 10            | 11.21      | 0.166          | 11.044      |
 
 Test Machine: *MacPro (3.1) 2.8Ghz (Dual) Quad Core / 18GB 800Mhz FB-DIM Memory / SSD*
