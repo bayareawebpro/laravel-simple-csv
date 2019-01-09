@@ -1,15 +1,13 @@
 <?php
 
 namespace Tests\Unit;
-
 use BayAreaWebPro\SimpleCsv\SimpleCsv;
 use Illuminate\Support\Collection;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Tests\TestCase;
 
-class ExampleTest extends TestCase
+class DefaultTest extends TestCase
 {
-
     private function getCollectionData(){
         return factory(\App\User::class, 1000)->make();
     }
@@ -22,18 +20,16 @@ class ExampleTest extends TestCase
 
     /**
      * Test CSV can be resolved.
-     *
      * @return void
      */
     public function test_csv_can_be_resolved()
     {
         $csv = app()->make('simple-csv');
-        $this->assertInstanceOf(SimpleCsv::class, $csv);
+        $this->assertTrue(($csv instanceof SimpleCsv));
     }
 
     /**
      * Test CSV can export files.
-     *
      * @return void
      */
     public function test_csv_can_export_files()
@@ -49,7 +45,6 @@ class ExampleTest extends TestCase
 
     /**
      * Test CSV can export download streams.
-     *
      * @return void
      */
     public function test_csv_can_export_download_streams()
@@ -59,11 +54,11 @@ class ExampleTest extends TestCase
         $csv = app()->make('simple-csv');
         $response = $csv->export($collection)->download('download.csv');
 
-        $this->assertInstanceOf(StreamedResponse::class, $response);
+        $this->assertTrue($response  instanceof StreamedResponse);
     }
+
     /**
      * Test CSV can import files to collections.
-     *
      * @return void
      */
     public function test_csv_can_import_files_and_restore_collections()
@@ -75,10 +70,36 @@ class ExampleTest extends TestCase
         $csv = app()->make('simple-csv');
         $csv->export($collection)->save($path);
 
+        /** @var  $decoded Collection */
         $decoded = $csv->import($path);
 
-        $this->assertInstanceOf(Collection::class, $decoded);
+        $this->assertTrue($decoded instanceof Collection);
 
         $this->assertArraySubset($collection->toArray(), $decoded->toArray());
     }
+
+
+	/**
+	 * Test CSV can import files to collections.
+	 * @return void
+	 */
+	public function test_csv_can_import_using_callback_inside_generator()
+	{
+		$rows = $this->getCollectionData();
+		$path = $this->getExpectedStoragePath();
+
+		//Will Fail if Prior Tests Fail.
+		$csv = app()->make('simple-csv');
+		$csv->export($rows)->save($path);
+
+		$total = collect();
+		$csv->import($path, function ($collection) use ($total) {
+			/** @var  $collection Collection */
+			$collection->each(function($row) use ($total){
+				$total->push($row);
+			});
+		}, 100);
+
+		$this->assertArraySubset($total->toArray(), $rows->toArray());
+	}
 }

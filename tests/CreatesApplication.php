@@ -13,7 +13,7 @@ trait CreatesApplication
      */
     public function createApplication()
     {
-        $app = require '/Users/builder/Projects/laravel/bootstrap/app.php';
+        $app = require '/Users/builder/GitHub/laravel-simple-csv-testing/bootstrap/app.php';
 
         $app->make(Kernel::class)->bootstrap();
 

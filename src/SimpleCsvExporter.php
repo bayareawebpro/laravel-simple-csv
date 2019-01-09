@@ -70,7 +70,7 @@ class SimpleCsvExporter
      * @param $csv SplFileObject
      * @return void
      */
-    private function loopLines($csv)
+    protected function loopLines($csv)
     {
         $generator = $this->collection->getIterator();
 
@@ -90,7 +90,7 @@ class SimpleCsvExporter
      * @param $line array
      * @return void
      */
-    private function writeLine($csv, $line)
+    protected function writeLine($csv, $line)
     {
         $csv->fputcsv($line, $this->delimiter, $this->enclosure, $this->escape);
     }
@@ -100,7 +100,7 @@ class SimpleCsvExporter
      * @param $path string
      * @return SplFileObject
      */
-    private function getFileObject($path)
+    protected function getFileObject($path)
     {
         return new SplFileObject($path, "w");
     }
@@ -110,7 +110,7 @@ class SimpleCsvExporter
      * @param $path string
      * @return void
      */
-    private function touchFile($path)
+    protected function touchFile($path)
     {
         if (!file_exists($path)) {
             touch($path);
@@ -122,7 +122,7 @@ class SimpleCsvExporter
      * @param $entry mixed
      * @return array
      */
-    private function getRow($entry)
+    protected function getRow($entry)
     {
         return method_exists($entry, 'toArray') ? $entry->toArray() : (array) $entry;
     }

@@ -24,14 +24,22 @@ class SimpleCsv
     /**
      * Import the CSV to a new Collection
      * @param $path string
+     * @param $callback callable
+     * @param $chunk int
      * @param $delimiter string
      * @param $enclosure string
      * @param $escape string
      * @return \Illuminate\Support\Collection
      */
-    public function import($path = null, $delimiter = self::DELIMITER, $enclosure = self::ENCLOSURE, $escape = self::ESCAPE)
-    {
-        return with(new $this->csvImporter($delimiter, $enclosure, $escape))->import($path);
+    public function import(
+    	$path = null,
+	    $callback = null,
+	    $chunk = 500,
+	    $delimiter = self::DELIMITER,
+	    $enclosure = self::ENCLOSURE,
+	    $escape = self::ESCAPE
+    ){
+        return with(new $this->csvImporter($delimiter, $enclosure, $escape))->import($path, $callback, $chunk);
     }
 
     /**
