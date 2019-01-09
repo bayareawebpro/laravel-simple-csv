@@ -58,7 +58,7 @@ public function download(Request $request)
 
 #### Extended Options
 ```
-SimpleCsv::import($path = '/some/file.csv', $delimiter = ",", $enclosure = "\"", $escape = "\\");
+SimpleCsv::import($path = '/some/file.csv', $callback = function, $chunk = 500, $delimiter = ",", $enclosure = "\"", $escape = "\\");
 SimpleCsv::export($collection, $delimiter = ",", $enclosure = "\"", $escape = "\\");
 ```
 
@@ -112,6 +112,15 @@ DB::transaction(function(){
     $chunks->each(function($chunk){
         DB::insert($chunk->toArray());
     });
+});
+```
+
+Expose chunk callback to generator allowing lower memory consumption for large files:
+```
+DB::transaction(function(){
+    SimpleCsv::import(storage_path('table.csv'), function($chunk){
+       DB::insert($chunk->toArray());
+    }, 1000);
 });
 ```
 
