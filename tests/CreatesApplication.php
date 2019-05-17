@@ -1,7 +1,6 @@
 <?php
 
-namespace Tests;
-
+namespace BayAreaWebPro\SimpleCsv\Tests;
 use Illuminate\Contracts\Console\Kernel;
 
 trait CreatesApplication

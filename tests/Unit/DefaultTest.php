@@ -1,10 +1,11 @@
 <?php
 
-namespace Tests\Unit;
-use BayAreaWebPro\SimpleCsv\SimpleCsv;
+namespace BayAreaWebPro\SimpleCsv\Tests\Unit;
+
 use Illuminate\Support\Collection;
+use BayAreaWebPro\SimpleCsv\SimpleCsv;
+use BayAreaWebPro\SimpleCsv\Tests\TestCase;
 use Symfony\Component\HttpFoundation\StreamedResponse;
-use Tests\TestCase;
 
 class DefaultTest extends TestCase
 {
