@@ -2,7 +2,10 @@
 
 namespace BayAreaWebPro\SimpleCsv;
 
+use Iterator;
+use Generator;
 use SplFileObject;
+use Illuminate\Support\Collection;
 use Illuminate\Support\LazyCollection;
 
 class SimpleCsv
@@ -28,44 +31,21 @@ class SimpleCsv
 
     public function __construct()
     {
-        $this->escape = static::ESCAPE;
-        $this->delimiter = static::DELIMITER;
-        $this->enclosure = static::ENCLOSURE;
+        $this->escape = self::ESCAPE;
+        $this->delimiter = self::DELIMITER;
+        $this->enclosure = self::ENCLOSURE;
         $this->headers = null;
         $this->file = null;
     }
 
-    /**
-     * Set Delimiter String
-     * @param string $delimiter
-     * @return $this
-     */
-    public function setDelimiter(string $delimiter): self
-    {
+    public function make(
+        string $delimiter = self::DELIMITER,
+        string $enclosure = self::ENCLOSURE,
+        string $escape = self::ESCAPE
+    ){
         $this->delimiter = $delimiter;
-        return $this;
-    }
-
-    /**
-     * Set Enclosure String
-     * @param string $enclosure
-     * @return $this
-     */
-    public function setEnclosure(string $enclosure): self
-    {
         $this->enclosure = $enclosure;
-        return $this;
-    }
-
-    /**
-     * Set Escape String
-     * @param string $escape
-     * @return $this
-     */
-    public function setEscape(string $escape): self
-    {
         $this->escape = $escape;
-        return $this;
     }
 
     /**
@@ -99,12 +79,12 @@ class SimpleCsv
 
     /**
      * Export to FileSystem.
-     * @param LazyCollection $collection
+     * @param LazyCollection|Collection|array $collection
      * @param string $path
      * @return self
      * @throws \Throwable
      */
-    public function export(LazyCollection $collection, string $path): self
+    public function export($collection, string $path): self
     {
         //Get the file object.
         if (!file_exists($path)) touch($path);
@@ -116,12 +96,12 @@ class SimpleCsv
 
     /**
      * Download Response
-     * @param LazyCollection $collection
+     * @param LazyCollection|Collection|array $collection
      * @param $filename string
      * @return \Symfony\Component\HttpFoundation\StreamedResponse
      * @throws \Throwable
      */
-    public function download(LazyCollection $collection, string $filename)
+    public function download($collection, string $filename)
     {
         return response()->streamDownload(function () use ($collection) {
             $this->openFileObject('php://output', 'w');
@@ -181,19 +161,26 @@ class SimpleCsv
 
     /**
      * @param LazyCollection $collection
+     * @throws \Throwable
      */
-    protected function writeLines(LazyCollection $collection): void
+    protected function writeLines($collection): void
     {
-        $collection->chunk(500)->each(function (LazyCollection $chunk) {
-            $chunk->each(function ($entry) {
-                if (!$this->headers) {
-                    $this->headers = array_keys($this->flattenRow($entry));
-                    $this->writeLine($this->headers);
-                }
-                $this->writeLine(array_values($this->flattenRow($entry)));
-                unset($entry);
-            });
-            unset($chunk);
-        });
+        if(
+            !$collection instanceof Iterator &&
+            !$collection instanceof Generator &&
+            !$collection instanceof Collection &&
+            !$collection instanceof LazyCollection &&
+            !is_array($collection)
+        ){
+            throw new \Exception("Non-Iterable Object cannot be iterated.");
+        }
+        foreach ($collection as $entry){
+            if (!$this->headers) {
+                $this->headers = array_keys($this->flattenRow($entry));
+                $this->writeLine($this->headers);
+            }
+            $this->writeLine(array_values($this->flattenRow($entry)));
+            unset($entry);
+        }
     }
 }

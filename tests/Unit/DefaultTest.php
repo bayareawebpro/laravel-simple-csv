@@ -3,6 +3,7 @@
 namespace BayAreaWebPro\SimpleCsv\Tests\Unit;
 
 
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\LazyCollection;
@@ -82,7 +83,6 @@ class DefaultTest extends TestCase
 
     public function test_can_download_streams()
     {
-
         $items = $this->getCollectionData()->toArray();
 
         $collectionLazy = LazyCollection::make($items);
