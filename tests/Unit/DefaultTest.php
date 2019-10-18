@@ -4,6 +4,7 @@ namespace BayAreaWebPro\SimpleCsv\Tests\Unit;
 
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\LazyCollection;
@@ -55,6 +56,31 @@ class DefaultTest extends TestCase
     private function getRandomStoragePath()
     {
         return storage_path(Str::random(16) . '.csv');
+    }
+
+    public function test_export_from_iterables()
+    {
+        $items = $this->getCollectionData(10)->toArray();
+
+        // Array
+        $pathA = $this->getRandomStoragePath();
+        SimpleCsv::export($items, $pathA);
+
+        $this->assertFileExists($pathA);
+        $fileData = File::get($pathA);
+        foreach ($items as $item) {
+            $this->assertStringContainsString($item['email'], $fileData);
+        }
+
+        // Collection
+        $pathB = $this->getRandomStoragePath();
+        SimpleCsv::export(Collection::make($items), $pathB);
+
+        $this->assertFileExists($pathB);
+        $fileData = File::get($pathB);
+        foreach ($items as $item) {
+            $this->assertStringContainsString($item['email'], $fileData);
+        }
     }
 
     public function test_export_files_and_restore()
