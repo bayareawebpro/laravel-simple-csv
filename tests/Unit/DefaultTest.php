@@ -1,106 +1,131 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace BayAreaWebPro\SimpleCsv\Tests\Unit;
 
+
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
-use BayAreaWebPro\SimpleCsv\SimpleCsv;
-use BayAreaWebPro\SimpleCsv\Tests\TestCase;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\LazyCollection;
 use Symfony\Component\HttpFoundation\StreamedResponse;
+
+use BayAreaWebPro\SimpleCsv\SimpleCsvFacade as SimpleCsv;
+use BayAreaWebPro\SimpleCsv\Tests\TestCase;
+
+class LazyGenerator
+{
+    /**
+     * @param int $total
+     * @param \Closure $callback
+     * @return LazyCollection
+     */
+    public static function make(int $total, \Closure $callback): LazyCollection
+    {
+        $faker = app(\Faker\Generator::class);
+        $count = 0;
+        return LazyCollection::make(function () use (&$count, $total, $faker, $callback) {
+            while ($count < $total) {
+                $count++;
+                yield $callback($faker);
+            }
+        });
+    }
+}
 
 class DefaultTest extends TestCase
 {
-    private function getCollectionData(){
-        return factory(\App\User::class, 1000)->make();
-    }
-    private function getRandomStoragePath(){
-        return storage_path(str_random(16) . '.csv');
-    }
-    private function getExpectedStoragePath(){
-        return storage_path('simple-csv-test.csv');
+
+    public function setUp(): void
+    {
+        parent::setUp();
+        File::cleanDirectory(storage_path());
     }
 
-    /**
-     * Test CSV can be resolved.
-     * @return void
-     */
-    public function test_csv_can_be_resolved()
+    private function getCollectionData($total = 1000): LazyCollection
     {
-        $csv = app()->make('simple-csv');
-        $this->assertTrue(($csv instanceof SimpleCsv));
+        return LazyGenerator::make($total, function (\Faker\Generator $faker) {
+            return [
+                'uuid'  => (string)$faker->uuid,
+                'name'  => (string)$faker->name,
+                'email' => (string)$faker->email,
+            ];
+        });
     }
 
-    /**
-     * Test CSV can export files.
-     * @return void
-     */
-    public function test_csv_can_export_files()
+    private function getRandomStoragePath()
     {
-        $collection = $this->getCollectionData();
+        return storage_path(Str::random(16) . '.csv');
+    }
+
+    public function test_export_from_iterables()
+    {
+        $items = $this->getCollectionData(10)->toArray();
+
+        // Array
+        $pathA = $this->getRandomStoragePath();
+        SimpleCsv::export($items, $pathA);
+
+        $this->assertFileExists($pathA);
+        $fileData = File::get($pathA);
+        foreach ($items as $item) {
+            $this->assertStringContainsString($item['email'], $fileData);
+        }
+
+        // Collection
+        $pathB = $this->getRandomStoragePath();
+        SimpleCsv::export(Collection::make($items), $pathB);
+
+        $this->assertFileExists($pathB);
+        $fileData = File::get($pathB);
+        foreach ($items as $item) {
+            $this->assertStringContainsString($item['email'], $fileData);
+        }
+    }
+
+    public function test_export_files_and_restore()
+    {
+        $items = $this->getCollectionData()->toArray();
+
+        $collectionLazy = LazyCollection::make($items);
+
         $path = $this->getRandomStoragePath();
 
-        $csv = app()->make('simple-csv');
-        $csv->export($collection)->save($path);
+        SimpleCsv::export($collectionLazy, $path);
 
-        $this->assertTrue(app()->make('files')->exists($path));
+        $this->assertFileExists($path);
+
+        $fileData = File::get($path);
+        foreach ($items as $item) {
+            $this->assertStringContainsString($item['email'], $fileData);
+        }
+
+        $decoded = SimpleCsv::import($path);
+        $this->assertTrue($decoded instanceof LazyCollection);
+        foreach ($decoded as $decodedItem) {
+            $this->assertStringContainsString($decodedItem['email'], $fileData);
+        }
     }
 
-    /**
-     * Test CSV can export download streams.
-     * @return void
-     */
-    public function test_csv_can_export_download_streams()
+    public function test_can_download_streams()
     {
-        $collection = $this->getCollectionData();
+        $items = $this->getCollectionData()->toArray();
 
-        $csv = app()->make('simple-csv');
-        $response = $csv->export($collection)->download('download.csv');
+        $collectionLazy = LazyCollection::make($items);
 
-        $this->assertTrue($response  instanceof StreamedResponse);
+        $response = SimpleCsv::download($collectionLazy, 'download.csv');
+
+        $this->assertTrue($response instanceof StreamedResponse);
+
+        //Capture Streamed Output...
+        ob_start();
+        $response->sendContent();
+        $data = (string)ob_get_clean();
+        //Capture Streamed Output...
+
+        $this->assertNotEmpty($data);
+        foreach ($items as $item) {
+            $this->assertStringContainsString($item['email'], $data);
+        }
     }
-
-    /**
-     * Test CSV can import files to collections.
-     * @return void
-     */
-    public function test_csv_can_import_files_and_restore_collections()
-    {
-        $collection = $this->getCollectionData();
-        $path = $this->getExpectedStoragePath();
-
-        //Will Fail if Prior Tests Fail.
-        $csv = app()->make('simple-csv');
-        $csv->export($collection)->save($path);
-
-        /** @var  $decoded Collection */
-        $decoded = $csv->import($path);
-
-        $this->assertTrue($decoded instanceof Collection);
-
-        $this->assertArraySubset($collection->toArray(), $decoded->toArray());
-    }
-
-
-	/**
-	 * Test CSV can import files to collections.
-	 * @return void
-	 */
-	public function test_csv_can_import_using_callback_inside_generator()
-	{
-		$rows = $this->getCollectionData();
-		$path = $this->getExpectedStoragePath();
-
-		//Will Fail if Prior Tests Fail.
-		$csv = app()->make('simple-csv');
-		$csv->export($rows)->save($path);
-
-		$total = collect();
-		$csv->import($path, function ($collection) use ($total) {
-			/** @var  $collection Collection */
-			$collection->each(function($row) use ($total){
-				$total->push($row);
-			});
-		}, 100);
-
-		$this->assertArraySubset($total->toArray(), $rows->toArray());
-	}
 }
