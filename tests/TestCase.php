@@ -1,9 +1,32 @@
 <?php
-
 namespace BayAreaWebPro\SimpleCsv\Tests;
-use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
+
+use BayAreaWebPro\SimpleCsv\SimpleCsv;
+use BayAreaWebPro\SimpleCsv\SimpleCsvFacade;
+use BayAreaWebPro\SimpleCsv\SimpleCsvServiceProvider;
+use Orchestra\Testbench\TestCase as BaseTestCase;
 
 abstract class TestCase extends BaseTestCase
 {
-    use CreatesApplication;
+    /**
+     * Load package service provider
+     * @param \Illuminate\Foundation\Application $app
+     * @return array
+     */
+    protected function getPackageProviders($app)
+    {
+        return [SimpleCsvServiceProvider::class];
+    }
+
+    /**
+     * Load package alias
+     * @param \Illuminate\Foundation\Application $app
+     * @return array
+     */
+    protected function getPackageAliases($app)
+    {
+        return [
+            'SimpleCsv' => SimpleCsvFacade::class,
+        ];
+    }
 }

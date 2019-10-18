@@ -1,9 +1,10 @@
-<?php namespace BayAreaWebPro\SimpleCsv;
+<?php
 
-/**
- * The SimpleCsv Service Provider
- */
-class SimpleCsvServiceProvider extends \Illuminate\Support\ServiceProvider
+namespace BayAreaWebPro\SimpleCsv;
+
+use Illuminate\Support\ServiceProvider;
+
+class SimpleCsvServiceProvider extends ServiceProvider
 {
 
     /**
