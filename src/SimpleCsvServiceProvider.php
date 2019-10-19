@@ -14,9 +14,7 @@ class SimpleCsvServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->bind('simple-csv', function () {
-            return $this->app->make(SimpleCsv::class);
-        });
+        $this->app->bind('simple-csv', SimpleCsv::class);
     }
 
     /**
