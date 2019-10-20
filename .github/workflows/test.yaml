@@ -1,15 +1,26 @@
-name: tests
+name: ci
 on: [push, pull_request]
 jobs:
-  CI:
+  build:
     runs-on: ubuntu-latest
     steps:
-      uses: actions/checkout@v1
+      - uses: actions/checkout@v1
         with:
           fetch-depth: 1
-      - name: Composer
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 12.x
+      - name: Composer Dependencies
         run: composer install --no-ansi --no-interaction --no-scripts --no-suggest --no-progress --prefer-dist
       - name: Lint
         run: php7.3 vendor/bin/phpstan analyse
-      - name: Test
+      - name: Unit Tests
         run: php7.3 vendor/bin/phpunit
+      #- name: NPM dependencies
+      #  run: npm install
+      #- name: Mix Compile
+      #  run: npm run production
+      #- name: Dusk Driver
+      #  run: php7.3 artisan dusk:chrome-driver
+      #- name: Browser Tests
+      #  run: php7.3 artisan dusk
