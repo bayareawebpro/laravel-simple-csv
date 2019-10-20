@@ -19,16 +19,6 @@ composer require bayareawebpro/laravel-simple-csv
 
 ## Usage:
 
-### Import to Collection
-1) Pass a path to the import method which returns the collection of parsed entries.
-```
-use SimpleCsv;
-
-$collection = SimpleCsv::import(storage_path('table.csv'));
-```
-___
-
-### Import
 ```
 $lazyCollection = SimpleCsv::import(storage_path('collection.csv'));
 ```
@@ -73,10 +63,26 @@ public function download(Request $request)
 ```
 
 #### Extended Options
+```php
+<?php
+use Illuminate\Support\Facades\Config;
+Config::set('simple-csv.delimiter', ...);
+Config::set('simple-csv.enclosure', ...);
+Config::set('simple-csv.escape', ...);
 ```
-SimpleCsv::make($delimter, $enclosure, $escape)->export(...);
-SimpleCsv::make($delimter, $enclosure, $escape)->import(...);
+
+## Or, Create a Config File
+
+```php
+<?php
+//config/simple-csv.php
+return [
+    'delimiter' => "???",
+    'enclosure' => "???",
+    'escape'    => "???",
+];
 ```
+
 
 ## File Splitting Utility
 A file splitting utility has been included that will break large CSV files into chunks 

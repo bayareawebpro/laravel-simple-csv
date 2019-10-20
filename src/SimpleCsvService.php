@@ -10,9 +10,9 @@ use Illuminate\Support\LazyCollection;
 
 class SimpleCsvService
 {
-    const ESCAPE = '\\';
     const DELIMITER = ',';
     const ENCLOSURE = '"';
+    const ESCAPE = '\\';
 
     /**
      * @var string
@@ -29,11 +29,15 @@ class SimpleCsvService
      */
     protected $file;
 
-    public function __construct()
+    public function __construct(
+        string $delimiter = self::DELIMITER,
+        string $enclosure = self::ENCLOSURE,
+        string $escape = self::ESCAPE
+    )
     {
-        $this->escape = self::ESCAPE;
-        $this->delimiter = self::DELIMITER;
-        $this->enclosure = self::ENCLOSURE;
+        $this->delimiter = $delimiter;
+        $this->enclosure = $enclosure;
+        $this->escape = $escape;
         $this->headers = null;
         $this->file = null;
     }
@@ -101,16 +105,16 @@ class SimpleCsvService
 
     protected function writeLines($collection): void
     {
-        if(
+        if (
             !$collection instanceof Iterator &&
             !$collection instanceof Generator &&
             !$collection instanceof Collection &&
             !$collection instanceof LazyCollection &&
             !is_array($collection)
-        ){
+        ) {
             throw new \Exception("Non-Iterable Object cannot be iterated.");
         }
-        foreach ($collection as $entry){
+        foreach ($collection as $entry) {
             if (!$this->headers) {
                 $this->headers = array_keys($this->flattenRow($entry));
                 $this->writeLine($this->headers);
