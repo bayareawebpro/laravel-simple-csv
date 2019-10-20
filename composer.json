@@ -28,7 +28,8 @@
         }
     },
     "scripts": {
-        "test": "vendor/bin/phpunit"
+        "test": "vendor/bin/phpunit",
+        "lint": "vendor/bin/phpstan analyse"
     },
     "extra": {
         "laravel": {

@@ -1,8 +1,12 @@
-# Simple CSV for Laravel
+# Laravel Simple CSV
 
 ![](https://github.com/bayareawebpro/simple-csv/workflows/ci/badge.svg)
 ![](https://img.shields.io/badge/License-MIT-success.svg)
 ![](https://img.shields.io/badge/Version-2.0-blue.svg)
+
+https://packagist.org/packages/bayareawebpro/laravel-simple-csv
+
+---
 
 ## Features
 - Import to LazyCollection.

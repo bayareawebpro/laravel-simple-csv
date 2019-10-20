@@ -13,9 +13,9 @@ jobs:
       - name: Composer Dependencies
         run: composer install --no-ansi --no-interaction --no-scripts --no-suggest --no-progress --prefer-dist
       - name: Lint
-        run: php7.3 vendor/bin/phpstan analyse
+        run: composer lint
       - name: Unit Tests
-        run: php7.3 vendor/bin/phpunit
+        run: composer test
       #- name: NPM dependencies
       #  run: npm install
       #- name: Mix Compile
