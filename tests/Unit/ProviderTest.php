@@ -3,6 +3,7 @@
 namespace BayAreaWebPro\SimpleCsv\Tests\Unit;
 
 use BayAreaWebPro\SimpleCsv\SimpleCsv;
+use BayAreaWebPro\SimpleCsv\SimpleCsvService;
 use BayAreaWebPro\SimpleCsv\SimpleCsvServiceProvider;
 use BayAreaWebPro\SimpleCsv\Tests\TestCase;
 
@@ -15,17 +16,17 @@ class ProviderTest extends TestCase
 
     public function test_container_can_resolve_instance()
     {
-        $this->assertInstanceOf(SimpleCsv::class, $this->app->make('simple-csv'), 'Container can make instance of service.');
+        $this->assertInstanceOf(SimpleCsvService::class, $this->app->make('simple-csv'), 'Container can make instance of service.');
     }
 
     public function test_facade_can_resolve_instance()
     {
-        $this->assertInstanceOf(SimpleCsv::class, \SimpleCsv::getFacadeRoot(), 'Facade can make instance of service.');
+        $this->assertInstanceOf(SimpleCsvService::class, \SimpleCsv::getFacadeRoot(), 'Facade can make instance of service.');
     }
 
     public function test_service_can_be_resolved()
     {
         $csv = app('simple-csv');
-        $this->assertTrue(($csv instanceof SimpleCsv));
+        $this->assertTrue(($csv instanceof SimpleCsvService));
     }
 }

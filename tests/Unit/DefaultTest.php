@@ -2,45 +2,20 @@
 
 namespace BayAreaWebPro\SimpleCsv\Tests\Unit;
 
-
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Collection;
-use Illuminate\Support\Str;
-use Illuminate\Support\Facades\File;
-use Illuminate\Support\LazyCollection;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
-use BayAreaWebPro\SimpleCsv\SimpleCsvFacade as SimpleCsv;
-use BayAreaWebPro\SimpleCsv\Tests\TestCase;
+use Illuminate\Support\LazyCollection;
+use Illuminate\Support\Collection;
 
-class LazyGenerator
-{
-    /**
-     * @param int $total
-     * @param \Closure $callback
-     * @return LazyCollection
-     */
-    public static function make(int $total, \Closure $callback): LazyCollection
-    {
-        $faker = app(\Faker\Generator::class);
-        $count = 0;
-        return LazyCollection::make(function () use (&$count, $total, $faker, $callback) {
-            while ($count < $total) {
-                $count++;
-                yield $callback($faker);
-            }
-        });
-    }
-}
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Str;
+
+use BayAreaWebPro\SimpleCsv\Tests\LazyGenerator;
+use BayAreaWebPro\SimpleCsv\Tests\TestCase;
+use BayAreaWebPro\SimpleCsv\SimpleCsv;
 
 class DefaultTest extends TestCase
 {
-
-    public function setUp(): void
-    {
-        parent::setUp();
-        File::cleanDirectory(storage_path());
-    }
 
     private function getCollectionData($total = 1000): LazyCollection
     {
@@ -55,6 +30,7 @@ class DefaultTest extends TestCase
 
     private function getRandomStoragePath()
     {
+        File::cleanDirectory(storage_path());
         return storage_path(Str::random(16) . '.csv');
     }
 
@@ -67,9 +43,8 @@ class DefaultTest extends TestCase
         SimpleCsv::export($items, $pathA);
 
         $this->assertFileExists($pathA);
-        $fileData = File::get($pathA);
         foreach ($items as $item) {
-            $this->assertStringContainsString($item['email'], $fileData);
+            $this->assertStringContainsString($item['email'], File::get($pathA));
         }
 
         // Collection
@@ -77,9 +52,8 @@ class DefaultTest extends TestCase
         SimpleCsv::export(Collection::make($items), $pathB);
 
         $this->assertFileExists($pathB);
-        $fileData = File::get($pathB);
         foreach ($items as $item) {
-            $this->assertStringContainsString($item['email'], $fileData);
+            $this->assertStringContainsString($item['email'], File::get($pathB));
         }
     }
 

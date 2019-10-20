@@ -2,7 +2,6 @@
 namespace BayAreaWebPro\SimpleCsv\Tests;
 
 use BayAreaWebPro\SimpleCsv\SimpleCsv;
-use BayAreaWebPro\SimpleCsv\SimpleCsvFacade;
 use BayAreaWebPro\SimpleCsv\SimpleCsvServiceProvider;
 use Orchestra\Testbench\TestCase as BaseTestCase;
 
@@ -26,7 +25,7 @@ abstract class TestCase extends BaseTestCase
     protected function getPackageAliases($app)
     {
         return [
-            'SimpleCsv' => SimpleCsvFacade::class,
+            'SimpleCsv' => SimpleCsv::class,
         ];
     }
 }
