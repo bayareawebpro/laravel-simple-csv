@@ -4,10 +4,10 @@ jobs:
   CI:
     runs-on: ubuntu-latest
     steps:
+      uses: actions/checkout@v1
+        with:
+          fetch-depth: 1
       - name: Composer
-        uses: actions/checkout@v1
-          with:
-            fetch-depth: 1
         run: composer install --no-ansi --no-interaction --no-scripts --no-suggest --no-progress --prefer-dist
       - name: Lint
         run: php7.3 vendor/bin/phpstan analyse
