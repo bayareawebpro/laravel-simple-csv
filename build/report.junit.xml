@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuites>
-  <testsuite name="Unit" tests="7" assertions="3030" errors="0" failures="0" skipped="0" time="0.560309">
-    <testsuite name="BayAreaWebPro\SimpleCsv\Tests\Unit\DefaultTest" file="/Users/builder/Sites/laravel-simple-csv/tests/Unit/DefaultTest.php" tests="3" assertions="3026" errors="0" failures="0" skipped="0" time="0.536690">
-      <testcase name="test_export_from_iterables" class="BayAreaWebPro\SimpleCsv\Tests\Unit\DefaultTest" classname="BayAreaWebPro.SimpleCsv.Tests.Unit.DefaultTest" file="/Users/builder/Sites/laravel-simple-csv/tests/Unit/DefaultTest.php" line="37" assertions="22" time="0.075894"/>
-      <testcase name="test_export_files_and_restore" class="BayAreaWebPro\SimpleCsv\Tests\Unit\DefaultTest" classname="BayAreaWebPro.SimpleCsv.Tests.Unit.DefaultTest" file="/Users/builder/Sites/laravel-simple-csv/tests/Unit/DefaultTest.php" line="60" assertions="2002" time="0.277201"/>
-      <testcase name="test_can_download_streams" class="BayAreaWebPro\SimpleCsv\Tests\Unit\DefaultTest" classname="BayAreaWebPro.SimpleCsv.Tests.Unit.DefaultTest" file="/Users/builder/Sites/laravel-simple-csv/tests/Unit/DefaultTest.php" line="84" assertions="1002" time="0.183595"/>
+  <testsuite name="Unit" tests="7" assertions="3030" errors="0" failures="0" skipped="0" time="0.574183">
+    <testsuite name="BayAreaWebPro\SimpleCsv\Tests\Unit\DefaultTest" file="/Users/builder/Sites/laravel-simple-csv/tests/Unit/DefaultTest.php" tests="3" assertions="3026" errors="0" failures="0" skipped="0" time="0.549980">
+      <testcase name="test_export_from_iterables" class="BayAreaWebPro\SimpleCsv\Tests\Unit\DefaultTest" classname="BayAreaWebPro.SimpleCsv.Tests.Unit.DefaultTest" file="/Users/builder/Sites/laravel-simple-csv/tests/Unit/DefaultTest.php" line="37" assertions="22" time="0.079383"/>
+      <testcase name="test_export_files_and_restore" class="BayAreaWebPro\SimpleCsv\Tests\Unit\DefaultTest" classname="BayAreaWebPro.SimpleCsv.Tests.Unit.DefaultTest" file="/Users/builder/Sites/laravel-simple-csv/tests/Unit/DefaultTest.php" line="60" assertions="2002" time="0.282648"/>
+      <testcase name="test_can_download_streams" class="BayAreaWebPro\SimpleCsv\Tests\Unit\DefaultTest" classname="BayAreaWebPro.SimpleCsv.Tests.Unit.DefaultTest" file="/Users/builder/Sites/laravel-simple-csv/tests/Unit/DefaultTest.php" line="84" assertions="1002" time="0.187949"/>
     </testsuite>
-    <testsuite name="BayAreaWebPro\SimpleCsv\Tests\Unit\ProviderTest" file="/Users/builder/Sites/laravel-simple-csv/tests/Unit/ProviderTest.php" tests="4" assertions="4" errors="0" failures="0" skipped="0" time="0.023619">
-      <testcase name="test_provider_is_registered" class="BayAreaWebPro\SimpleCsv\Tests\Unit\ProviderTest" classname="BayAreaWebPro.SimpleCsv.Tests.Unit.ProviderTest" file="/Users/builder/Sites/laravel-simple-csv/tests/Unit/ProviderTest.php" line="12" assertions="1" time="0.005085"/>
-      <testcase name="test_container_can_resolve_instance" class="BayAreaWebPro\SimpleCsv\Tests\Unit\ProviderTest" classname="BayAreaWebPro.SimpleCsv.Tests.Unit.ProviderTest" file="/Users/builder/Sites/laravel-simple-csv/tests/Unit/ProviderTest.php" line="17" assertions="1" time="0.006472"/>
-      <testcase name="test_facade_can_resolve_instance" class="BayAreaWebPro\SimpleCsv\Tests\Unit\ProviderTest" classname="BayAreaWebPro.SimpleCsv.Tests.Unit.ProviderTest" file="/Users/builder/Sites/laravel-simple-csv/tests/Unit/ProviderTest.php" line="22" assertions="1" time="0.006057"/>
-      <testcase name="test_service_can_be_resolved" class="BayAreaWebPro\SimpleCsv\Tests\Unit\ProviderTest" classname="BayAreaWebPro.SimpleCsv.Tests.Unit.ProviderTest" file="/Users/builder/Sites/laravel-simple-csv/tests/Unit/ProviderTest.php" line="27" assertions="1" time="0.006005"/>
+    <testsuite name="BayAreaWebPro\SimpleCsv\Tests\Unit\ProviderTest" file="/Users/builder/Sites/laravel-simple-csv/tests/Unit/ProviderTest.php" tests="4" assertions="4" errors="0" failures="0" skipped="0" time="0.024203">
+      <testcase name="test_provider_is_registered" class="BayAreaWebPro\SimpleCsv\Tests\Unit\ProviderTest" classname="BayAreaWebPro.SimpleCsv.Tests.Unit.ProviderTest" file="/Users/builder/Sites/laravel-simple-csv/tests/Unit/ProviderTest.php" line="12" assertions="1" time="0.006179"/>
+      <testcase name="test_container_can_resolve_instance" class="BayAreaWebPro\SimpleCsv\Tests\Unit\ProviderTest" classname="BayAreaWebPro.SimpleCsv.Tests.Unit.ProviderTest" file="/Users/builder/Sites/laravel-simple-csv/tests/Unit/ProviderTest.php" line="17" assertions="1" time="0.006072"/>
+      <testcase name="test_facade_can_resolve_instance" class="BayAreaWebPro\SimpleCsv\Tests\Unit\ProviderTest" classname="BayAreaWebPro.SimpleCsv.Tests.Unit.ProviderTest" file="/Users/builder/Sites/laravel-simple-csv/tests/Unit/ProviderTest.php" line="22" assertions="1" time="0.005715"/>
+      <testcase name="test_service_can_be_resolved" class="BayAreaWebPro\SimpleCsv\Tests\Unit\ProviderTest" classname="BayAreaWebPro.SimpleCsv.Tests.Unit.ProviderTest" file="/Users/builder/Sites/laravel-simple-csv/tests/Unit/ProviderTest.php" line="27" assertions="1" time="0.006237"/>
     </testsuite>
   </testsuite>
 </testsuites>

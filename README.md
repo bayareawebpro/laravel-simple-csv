@@ -19,13 +19,16 @@ composer require bayareawebpro/laravel-simple-csv
 
 ## Usage:
 
-```
+```php
+<?php
+use BayAreaWebPro\SimpleCsv\SimpleCsv;
 $lazyCollection = SimpleCsv::import(storage_path('collection.csv'));
 ```
 
 ### Export to File
-```
-use SimpleCsv;
+```php
+<?php
+use BayAreaWebPro\SimpleCsv\SimpleCsv;
 
 // Collection
 SimpleCsv::export(
@@ -53,16 +56,14 @@ SimpleCsv::export(
 ```
 
 ### Export Download Stream
-```
-use SimpleCsv;
-public function download(Request $request)
-{
-    $collection = LazyCollection::make(...);
-    return SimpleCsv::download($collection, 'download.csv');
-}
+
+```php
+<?php
+use BayAreaWebPro\SimpleCsv\SimpleCsv;
+return SimpleCsv::download([...], 'download.csv');
 ```
 
-#### Extended Options
+#### Override Options
 ```php
 <?php
 use Illuminate\Support\Facades\Config;
@@ -72,7 +73,6 @@ Config::set('simple-csv.escape', ...);
 ```
 
 ## Or, Create a Config File
-
 ```php
 <?php
 //config/simple-csv.php
@@ -82,7 +82,6 @@ return [
     'escape'    => "???",
 ];
 ```
-
 
 ## File Splitting Utility
 A file splitting utility has been included that will break large CSV files into chunks 
