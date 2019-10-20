@@ -7,7 +7,7 @@ use Generator;
 use SplFileObject;
 use Illuminate\Support\Collection;
 use Illuminate\Support\LazyCollection;
-
+use Symfony\Component\HttpFoundation\StreamedResponse;
 class SimpleCsvService
 {
     const DELIMITER = ',';
@@ -69,13 +69,15 @@ class SimpleCsvService
         return $this;
     }
 
-    public function download($collection, string $filename)
+    public function download($collection, string $filename, $headers = []): StreamedResponse
     {
         return response()->streamDownload(function () use ($collection) {
             $this->openFileObject('php://output', 'w');
             $this->writeLines($collection);
             $this->closeFileObject();
-        }, $filename, ['Content-Type' => 'text/csv']);
+        }, $filename, array_merge([
+            'Content-Type'  => 'text/csv',
+        ], $headers));
     }
 
     protected function getLine(): array
@@ -88,7 +90,7 @@ class SimpleCsvService
         $this->file->fputcsv($line, $this->delimiter, $this->enclosure, $this->escape);
     }
 
-    protected function flattenRow(array $entry): array
+    protected function flattenRow($entry): array
     {
         return method_exists($entry, 'toArray') ? $entry->toArray() : (array)$entry;
     }
