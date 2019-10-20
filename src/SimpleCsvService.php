@@ -20,7 +20,7 @@ class SimpleCsvService
     protected $delimiter, $enclosure, $escape;
 
     /**
-     * @var array
+     * @var array|null
      */
     protected $headers;
 
@@ -46,7 +46,7 @@ class SimpleCsvService
     {
         $this->openFileObject($path);
         $this->headers = array_values($this->getLine());
-        return LazyCollection::make(function () use ($path) {
+        return LazyCollection::make(function () {
             while ($this->file->valid() && $line = $this->getLine()) {
                 if (!$this->isInValidLine($line)) {
                     yield array_combine($this->headers, $line);

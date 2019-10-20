@@ -1,0 +1,20 @@
+name: tests
+on: [push, pull_request]
+jobs:
+  CI:
+    runs-on: ubuntu-latest
+    container:
+      image: bayareawebpro/laravel-docker
+    steps:
+      - uses: actions/checkout@v1
+        with:
+          fetch-depth: 1
+
+      - name: Install Composer Dependencies
+        run: composer install --no-ansi --no-interaction --no-scripts --no-suggest --no-progress --prefer-dist
+
+      - name: Lint
+        run: php7.3 vendor/bin/phpstan analyse
+
+      - name: Testsuite
+        run: php7.3 vendor/bin/phpunit

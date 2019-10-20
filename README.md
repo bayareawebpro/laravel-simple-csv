@@ -1,8 +1,8 @@
 # Simple CSV for Laravel
 
-[![Generic badge](https://img.shields.io/badge/Build-Passing-ok.svg)]()
-[![Generic badge](https://img.shields.io/badge/License-MIT-green.svg)]()
-[![Generic badge](https://img.shields.io/badge/Version-2.0-blue.svg)]()
+![](https://github.com/bayareawebpro/simple-csv/workflows/tests/badge.svg)
+![](https://img.shields.io/badge/License-MIT-success.svg)
+![](https://img.shields.io/badge/Version-2.0-blue.svg)
 
 ## Features
 - Import to LazyCollection.
