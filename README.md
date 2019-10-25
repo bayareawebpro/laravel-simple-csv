@@ -2,13 +2,10 @@
 
 ![](https://github.com/bayareawebpro/laravel-simple-csv/workflows/ci/badge.svg)
 ![](https://img.shields.io/badge/License-MIT-success.svg)
-<a href="https://packagist.org/packages/bayareawebpro/laravel-simple-csv"><img src="https://img.shields.io/packagist/dt/bayareawebpro/laravel-simple-csv.svg?style=flat-square" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/bayareawebpro/laravel-simple-csv"><img src="https://img.shields.io/github/v/release/bayareawebpro/laravel-simple-csv.svg?style=flat-square" alt="Latest Stable Version"></a>
+![](https://img.shields.io/packagist/dt/bayareawebpro/laravel-simple-csv.svg)
+![](https://img.shields.io/github/v/release/bayareawebpro/laravel-simple-csv.svg)
 
-
-https://packagist.org/packages/bayareawebpro/laravel-simple-csv
-
----
+> https://packagist.org/packages/bayareawebpro/laravel-simple-csv
 
 ## Features
 - Import to LazyCollection.
