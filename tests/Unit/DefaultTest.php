@@ -44,7 +44,7 @@ class DefaultTest extends TestCase
 
         $this->assertFileExists($pathA);
         foreach ($items as $item) {
-            $this->assertStringContainsString($item['email'], File::get($pathA));
+            $this->assertStringContainsString($item['uuid'], File::get($pathA));
         }
 
         // Collection
@@ -53,7 +53,7 @@ class DefaultTest extends TestCase
 
         $this->assertFileExists($pathB);
         foreach ($items as $item) {
-            $this->assertStringContainsString($item['email'], File::get($pathB));
+            $this->assertStringContainsString($item['uuid'], File::get($pathB));
         }
     }
 
