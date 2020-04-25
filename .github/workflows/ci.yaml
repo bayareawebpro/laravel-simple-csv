@@ -4,23 +4,21 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      #- uses: actions/setup-node@v1
-      #  with:
-      #    node-version: 12.x
       - uses: actions/checkout@v1
         with:
           fetch-depth: 1
+      - name: Cache Composer
+        uses: actions/cache@v1
+        with:
+          path: vendor
+          key: ${{ runner.OS }}-build-${{ hashFiles('**/composer.lock') }}
       - name: Composer Dependencies
         run: composer install --no-ansi --no-interaction --no-scripts --no-suggest --no-progress --prefer-dist
       - name: Lint
         run: composer lint
       - name: Unit Tests
         run: composer test
-      #- name: NPM dependencies
-      #  run: npm install
-      #- name: Mix Compile
-      #  run: npm run production
-      #- name: Dusk Driver
-      #  run: php7.3 artisan dusk:chrome-driver
-      #- name: Browser Tests
-      #  run: php7.3 artisan dusk
+      - name: Codecov
+        uses: codecov/codecov-action@v1.0.5
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}

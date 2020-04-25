@@ -29,4 +29,11 @@ class ProviderTest extends TestCase
         $csv = app('simple-csv');
         $this->assertTrue(($csv instanceof SimpleCsvService));
     }
+
+    public function test_declares_provided()
+    {
+        $this->assertTrue(in_array('simple-csv',
+            collect(app()->getProviders(SimpleCsvServiceProvider::class))->first()->provides())
+        );
+    }
 }
