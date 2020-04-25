@@ -16,11 +16,7 @@ jobs:
         run: composer lint
       - name: Unit Tests
         run: composer test
-      #- name: NPM dependencies
-      #  run: npm install
-      #- name: Mix Compile
-      #  run: npm run production
-      #- name: Dusk Driver
-      #  run: php7.3 artisan dusk:chrome-driver
-      #- name: Browser Tests
-      #  run: php7.3 artisan dusk
+      - name: Codecov
+          uses: codecov/codecov-action@v1.0.5
+          with:
+            token: ${{ secrets.CODECOV_TOKEN }}
