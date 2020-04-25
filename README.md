@@ -1,9 +1,9 @@
 # Laravel Simple CSV
 
 ![](https://github.com/bayareawebpro/laravel-simple-csv/workflows/ci/badge.svg)
-![](https://img.shields.io/badge/License-MIT-success.svg)
-![](https://img.shields.io/packagist/dt/bayareawebpro/laravel-simple-csv.svg)
 ![](https://img.shields.io/github/v/release/bayareawebpro/laravel-simple-csv.svg)
+![](https://img.shields.io/packagist/dt/bayareawebpro/laravel-simple-csv.svg)
+![](https://img.shields.io/badge/License-MIT-success.svg)
 
 > https://packagist.org/packages/bayareawebpro/laravel-simple-csv
 
