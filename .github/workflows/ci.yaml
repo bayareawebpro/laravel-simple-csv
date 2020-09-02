@@ -3,6 +3,7 @@ on:
   push:
     branches:
       - dev
+      - master
     paths-ignore:
       - 'README.md'
       - 'LICENSE'
