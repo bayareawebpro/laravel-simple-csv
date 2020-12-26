@@ -109,7 +109,6 @@ class SimpleCsvService
     {
         if (
             !$collection instanceof Iterator &&
-            !$collection instanceof Generator &&
             !$collection instanceof Collection &&
             !$collection instanceof LazyCollection &&
             !is_array($collection)
