@@ -3,11 +3,11 @@
 namespace BayAreaWebPro\SimpleCsv;
 
 use Iterator;
-use Generator;
 use SplFileObject;
 use Illuminate\Support\Collection;
 use Illuminate\Support\LazyCollection;
 use Symfony\Component\HttpFoundation\StreamedResponse;
+
 class SimpleCsvService
 {
     const DELIMITER = ',';
@@ -92,7 +92,7 @@ class SimpleCsvService
 
     protected function flattenRow($entry): array
     {
-        return method_exists($entry, 'toArray') ? $entry->toArray() : (array)$entry;
+        return is_object($entry) && method_exists($entry, 'toArray') ? $entry->toArray() : (array)$entry;
     }
 
     protected function openFileObject(string $path, string $mode = 'r'): void
@@ -109,7 +109,6 @@ class SimpleCsvService
     {
         if (
             !$collection instanceof Iterator &&
-            !$collection instanceof Generator &&
             !$collection instanceof Collection &&
             !$collection instanceof LazyCollection &&
             !is_array($collection)
