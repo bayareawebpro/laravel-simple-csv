@@ -103,6 +103,7 @@ class SimpleCsvService
     protected function closeFileObject(): void
     {
         $this->file = null;
+        $this->headers = null;
     }
 
     protected function writeLines($collection): void
