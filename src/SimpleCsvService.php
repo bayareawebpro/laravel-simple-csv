@@ -2,8 +2,9 @@
 
 namespace BayAreaWebPro\SimpleCsv;
 
-use Iterator;
-use SplFileObject;
+use \Iterator;
+use \SplFileObject;
+use \Exception;
 use Illuminate\Support\Collection;
 use Illuminate\Support\LazyCollection;
 use Symfony\Component\HttpFoundation\StreamedResponse;
@@ -14,19 +15,8 @@ class SimpleCsvService
     const ENCLOSURE = '"';
     const ESCAPE = '\\';
 
-    /**
-     * @var string
-     */
     protected $delimiter, $enclosure, $escape;
-
-    /**
-     * @var array|null
-     */
     protected $headers;
-
-    /**
-     * @var SplFileObject|null
-     */
     protected $file;
 
     public function __construct(
@@ -52,7 +42,14 @@ class SimpleCsvService
                     yield array_combine($this->headers, $line);
                 }
             }
+            $this->resetState();
         });
+    }
+
+    protected function resetState(): void
+    {
+        $this->headers = null;
+        $this->file = null;
     }
 
     protected function isInValidLine(array $line): bool
@@ -65,7 +62,7 @@ class SimpleCsvService
         if (!file_exists($path)) touch($path);
         $this->openFileObject($path, 'w');
         $this->writeLines($collection);
-        $this->closeFileObject();
+        $this->resetState();
         return $this;
     }
 
@@ -74,9 +71,9 @@ class SimpleCsvService
         return response()->streamDownload(function () use ($collection) {
             $this->openFileObject('php://output', 'w');
             $this->writeLines($collection);
-            $this->closeFileObject();
+            $this->resetState();
         }, $filename, array_merge([
-            'Content-Type'  => 'text/csv',
+            'Content-Type' => 'text/csv',
         ], $headers));
     }
 
@@ -97,12 +94,7 @@ class SimpleCsvService
 
     protected function openFileObject(string $path, string $mode = 'r'): void
     {
-        $this->file = new \SplFileObject($path, $mode);
-    }
-
-    protected function closeFileObject(): void
-    {
-        $this->file = null;
+        $this->file = new SplFileObject($path, $mode);
     }
 
     protected function writeLines($collection): void
@@ -113,7 +105,7 @@ class SimpleCsvService
             !$collection instanceof LazyCollection &&
             !is_array($collection)
         ) {
-            throw new \Exception("Non-Iterable Object cannot be iterated.");
+            throw new Exception("Non-Iterable Object cannot be iterated.");
         }
         foreach ($collection as $entry) {
             if (!$this->headers) {
