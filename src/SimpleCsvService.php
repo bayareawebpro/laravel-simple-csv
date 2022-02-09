@@ -94,7 +94,7 @@ class SimpleCsvService
 
     protected function openFileObject(string $path, string $mode = 'r'): void
     {
-        $this->file = new SplFileObject($path, $mode);
+        $this->file = new \SplFileObject($path, $mode);
     }
 
     protected function writeLines($collection): void
@@ -113,7 +113,6 @@ class SimpleCsvService
                 $this->writeLine($this->headers);
             }
             $this->writeLine(array_values($this->flattenRow($entry)));
-            unset($entry);
         }
     }
 }
