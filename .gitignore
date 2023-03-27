@@ -4,3 +4,4 @@
 /clover.xml
 /build
 /vendor
+.phpunit.cache/test-results
