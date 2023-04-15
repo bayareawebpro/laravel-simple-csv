@@ -16,18 +16,17 @@
 - Facade Included.
 
 ## Installation
-Simply require the package and Laravel will Auto-Discover the Service Provider.
+Require the package and Laravel will Auto-Discover the Service Provider.
+
 ```
 composer require bayareawebpro/laravel-simple-csv
 ```
 
 ## Usage:
 
-Invokable classes can be passed to the import method allow you to customize
-how are processed. By default, none are applied.
-
-Two classes to handle numerics and null values have 
-been supplied and can be applied.
+Invokable classes can be passed to the import method allowing you to customize
+how each row is processed. Two classes to handle numerics 
+and null values have been supplied.
 
 ```php
 use BayAreaWebPro\SimpleCsv\SimpleCsv;
