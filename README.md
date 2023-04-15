@@ -24,14 +24,24 @@ composer require bayareawebpro/laravel-simple-csv
 ## Usage:
 
 ```php
-<?php
 use BayAreaWebPro\SimpleCsv\SimpleCsv;
-$lazyCollection = SimpleCsv::import(storage_path('collection.csv'));
+
+$lazyCsvCollection = SimpleCsv::import(storage_path('collection.csv'));
+```
+
+### Empty Keys to Null
+
+PHP's 'putcsv' doesn't support writing `null` to csv files. The LazyCsvCollection returned by the import method 
+exposes a lazy 'emptyToNull' method that will convert empty array keys to null values for convenience. 
+
+```php
+use BayAreaWebPro\SimpleCsv\SimpleCsv;
+
+SimpleCsv::import(storage_path('collection.csv'))->emptyToNull();
 ```
 
 ### Export to File
 ```php
-<?php
 use BayAreaWebPro\SimpleCsv\SimpleCsv;
 
 // Collection
@@ -62,28 +72,31 @@ SimpleCsv::export(
 ### Export Download Stream
 
 ```php
-<?php
 use BayAreaWebPro\SimpleCsv\SimpleCsv;
+
 return SimpleCsv::download([...], 'download.csv');
 ```
 
 #### Override Options
 ```php
-<?php
 use Illuminate\Support\Facades\Config;
-Config::set('simple-csv.delimiter', ...);
-Config::set('simple-csv.enclosure', ...);
-Config::set('simple-csv.escape', ...);
+
+Config::set('simple-csv', [
+    'delimiter' => '?',
+    'enclosure' => '?',
+    'escape'    => '?',
+]);
 ```
 
 ## Or, Create a Config File
+
+`config/simple-csv.php`
+
 ```php
-<?php
-//config/simple-csv.php
 return [
-    'delimiter' => "???",
-    'enclosure' => "???",
-    'escape'    => "???",
+    'delimiter' => '?',
+    'enclosure' => '?',
+    'escape'    => '?',
 ];
 ```
 
