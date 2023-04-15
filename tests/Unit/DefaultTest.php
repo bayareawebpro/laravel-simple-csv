@@ -17,7 +17,6 @@ use BayAreaWebPro\SimpleCsv\SimpleCsv;
 
 class DefaultTest extends TestCase
 {
-
     private function getCollectionData($total = 1000): LazyCollection
     {
         return LazyGenerator::make($total, function (\Faker\Generator $faker) {
@@ -110,13 +109,12 @@ class DefaultTest extends TestCase
 
         $this->assertInstanceOf(StreamedResponse::class, $response);
 
-        //Capture Streamed Output...
         ob_start();
         $response->sendContent();
         $data = (string)ob_get_clean();
-        //Capture Streamed Output...
 
         $this->assertNotEmpty($data);
+
         foreach ($items as $item) {
             $this->assertStringContainsString($item['email'], $data);
         }

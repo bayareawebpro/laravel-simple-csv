@@ -15,7 +15,7 @@ class LazyGenerator
         $faker = app(\Faker\Generator::class);
         $count = 0;
         return LazyCollection::make(function () use (&$count, $total, $faker, $callback) {
-            while ($count < $total) {
+            while ($count <= $total) {
                 $count++;
                 yield $callback($faker);
             }
