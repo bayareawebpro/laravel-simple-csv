@@ -2,7 +2,6 @@
 
 namespace BayAreaWebPro\SimpleCsv\Tests\Unit;
 
-use BayAreaWebPro\SimpleCsv\SimpleCsv;
 use BayAreaWebPro\SimpleCsv\SimpleCsvService;
 use BayAreaWebPro\SimpleCsv\SimpleCsvServiceProvider;
 use BayAreaWebPro\SimpleCsv\Tests\TestCase;
@@ -27,7 +26,7 @@ class ProviderTest extends TestCase
     public function test_service_can_be_resolved()
     {
         $csv = app('simple-csv');
-        $this->assertTrue(($csv instanceof SimpleCsvService));
+        $this->assertInstanceOf(SimpleCsvService::class, $csv);
     }
 
     public function test_declares_provided()
