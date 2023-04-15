@@ -2,6 +2,8 @@
 
 namespace BayAreaWebPro\SimpleCsv\Tests\Unit;
 
+use BayAreaWebPro\SimpleCsv\Casts\EmptyValuesToNull;
+use BayAreaWebPro\SimpleCsv\Casts\NumericValues;
 use BayAreaWebPro\SimpleCsv\LazyCsvCollection;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
@@ -24,6 +26,9 @@ class DefaultTest extends TestCase
                 'uuid'  => (string)$faker->uuid,
                 'name'  => (string)$faker->name,
                 'email' => (string)$faker->email,
+                'empty' => null,
+                'float' => 3.14,
+                'int' => 256,
             ];
         });
     }
@@ -34,20 +39,25 @@ class DefaultTest extends TestCase
         return storage_path(Str::random(16) . '.csv');
     }
 
-    public function test_imported_lazy_collection_methods()
+    public function test_import_casts()
     {
-        $collection = new LazyCsvCollection(LazyGenerator::make(5, function () {
-            return ['null_field_exported_empty' => ''];
-        }));
-        foreach($collection as $row){
-            $this->assertNotNull($row['null_field_exported_empty']);
-        }
+        $items = $this->getCollectionData(5)->toArray();
 
-        $collection = new LazyCsvCollection(LazyGenerator::make(5, function () {
-            return ['null_field_exported_empty' => ''];
-        }));
-        foreach($collection->emptyToNull() as $row){
-            $this->assertNull($row['null_field_exported_empty']);
+        $path = $this->getRandomStoragePath();
+
+        SimpleCsv::export($items, $path);
+
+        $this->assertFileExists($path);
+
+        $items = SimpleCsv::import($path, [
+            EmptyValuesToNull::class,
+            NumericValues::class
+        ]);
+
+        foreach($items as $item){
+            $this->assertIsFloat($item['float']);
+            $this->assertNull($item['empty']);
+            $this->assertIsInt($item['int']);
         }
     }
 

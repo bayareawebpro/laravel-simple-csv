@@ -9,7 +9,7 @@ use Iterator;
  * The SimpleCsv Service Facade
  * @method static \Symfony\Component\HttpFoundation\StreamedResponse download(Collection|LazyCollection|Iterator|array $collection, string $filename)
  * @method static void export(Collection|LazyCollection|Iterator|array $collection, string $path)
- * @method static LazyCsvCollection import(string $path)
+ * @method static LazyCollection import(string $path, array $casts = [])
  */
 class SimpleCsv extends LaravelFacade
 {
