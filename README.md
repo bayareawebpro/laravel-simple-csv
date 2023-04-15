@@ -23,6 +23,12 @@ composer require bayareawebpro/laravel-simple-csv
 
 ## Usage:
 
+Invokable classes can be passed to the import method allow you to customize
+how are processed. By default, none are applied.
+
+Two classes to handle numerics and null values have 
+been supplied and can be applied.
+
 ```php
 use BayAreaWebPro\SimpleCsv\SimpleCsv;
 use BayAreaWebPro\SimpleCsv\Casts\EmptyValuesToNull;
@@ -34,7 +40,10 @@ $lazyCsvCollection = SimpleCsv::import(storage_path('collection.csv'), [
 ]);
 ```
 
-### Invokable Cast Classes
+### Invokable Classes
+
+**Dependency Injection:** Invokable classes can typehint required dependencies in a 
+constructor method when defined.
 
 ```php
 <?php declare(strict_types=1);
