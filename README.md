@@ -31,8 +31,8 @@ $lazyCsvCollection = SimpleCsv::import(storage_path('collection.csv'));
 
 ### Empty Keys to Null
 
-PHP's 'putcsv' doesn't support writing `null` to csv files. The LazyCsvCollection returned by the import method 
-exposes a lazy 'emptyToNull' method that will convert empty array keys to null values for convenience. 
+PHP's `fputcsv()` doesn't support writing `null` to csv files as it's not a string. The LazyCsvCollection returned by the import method 
+exposes a lazy `emptyToNull()` method that will convert empty values to null for convenience. 
 
 ```php
 use BayAreaWebPro\SimpleCsv\SimpleCsv;
@@ -81,11 +81,9 @@ return SimpleCsv::download([...], 'download.csv');
 ```php
 use Illuminate\Support\Facades\Config;
 
-Config::set('simple-csv', [
-    'delimiter' => '?',
-    'enclosure' => '?',
-    'escape'    => '?',
-]);
+Config::set('simple-csv.delimiter', ...);
+Config::set('simple-csv.enclosure', ...);
+Config::set('simple-csv.escape', ...);
 ```
 
 ## Or, Create a Config File
