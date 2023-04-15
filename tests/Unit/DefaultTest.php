@@ -2,6 +2,7 @@
 
 namespace BayAreaWebPro\SimpleCsv\Tests\Unit;
 
+use BayAreaWebPro\SimpleCsv\LazyCsvCollection;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
 use Illuminate\Support\LazyCollection;
@@ -32,6 +33,23 @@ class DefaultTest extends TestCase
     {
         File::cleanDirectory(storage_path());
         return storage_path(Str::random(16) . '.csv');
+    }
+
+    public function test_imported_lazy_collection_methods()
+    {
+        $collection = new LazyCsvCollection(LazyGenerator::make(5, function () {
+            return ['null_field_exported_empty' => ''];
+        }));
+        foreach($collection as $row){
+            $this->assertNotNull($row['null_field_exported_empty']);
+        }
+
+        $collection = new LazyCsvCollection(LazyGenerator::make(5, function () {
+            return ['null_field_exported_empty' => ''];
+        }));
+        foreach($collection->emptyToNull() as $row){
+            $this->assertNull($row['null_field_exported_empty']);
+        }
     }
 
     public function test_export_from_iterables()
@@ -75,7 +93,8 @@ class DefaultTest extends TestCase
         }
 
         $decoded = SimpleCsv::import($path);
-        $this->assertTrue($decoded instanceof LazyCollection);
+        $this->assertInstanceOf(LazyCollection::class, $decoded);
+
         foreach ($decoded as $decodedItem) {
             $this->assertStringContainsString($decodedItem['email'], $fileData);
         }
@@ -89,7 +108,7 @@ class DefaultTest extends TestCase
 
         $response = SimpleCsv::download($collectionLazy, 'download.csv');
 
-        $this->assertTrue($response instanceof StreamedResponse);
+        $this->assertInstanceOf(StreamedResponse::class, $response);
 
         //Capture Streamed Output...
         ob_start();

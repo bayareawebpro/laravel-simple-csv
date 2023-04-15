@@ -3,7 +3,6 @@
 namespace BayAreaWebPro\SimpleCsv;
 
 use \Iterator;
-use \SplFileObject;
 use \Exception;
 use Illuminate\Support\Collection;
 use Illuminate\Support\LazyCollection;
@@ -32,11 +31,11 @@ class SimpleCsvService
         $this->file = null;
     }
 
-    public function import(string $path): LazyCollection
+    public function import(string $path): LazyCsvCollection
     {
         $this->openFileObject($path);
         $this->headers = array_values($this->getLine());
-        return LazyCollection::make(function () {
+        return LazyCsvCollection::make(function () {
             while ($this->file->valid() && $line = $this->getLine()) {
                 if (!$this->isInValidLine($line)) {
                     yield array_combine($this->headers, $line);
