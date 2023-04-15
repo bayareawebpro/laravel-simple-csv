@@ -3,7 +3,7 @@
 use Illuminate\Support\Enumerable;
 use Illuminate\Support\LazyCollection;
 
-class LazyCsvCollection extends LazyCollection
+final class LazyCsvCollection extends LazyCollection
 {
     /**
      * Convert empty item array keys to null.
