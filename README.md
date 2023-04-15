@@ -25,19 +25,37 @@ composer require bayareawebpro/laravel-simple-csv
 
 ```php
 use BayAreaWebPro\SimpleCsv\SimpleCsv;
+use BayAreaWebPro\SimpleCsv\Casts\EmptyValuesToNull;
+use BayAreaWebPro\SimpleCsv\Casts\NumericValues;
 
-$lazyCsvCollection = SimpleCsv::import(storage_path('collection.csv'));
+$lazyCsvCollection = SimpleCsv::import(storage_path('collection.csv'), [
+    EmptyValuesToNull::class,
+    NumericValues::class,
+]);
 ```
 
-### Empty Keys to Null
-
-PHP's `fputcsv()` doesn't support writing `null` to csv files as it's not a string. The LazyCsvCollection returned by the import method 
-exposes a lazy `emptyToNull()` method that will convert empty values to null for convenience. 
+### Invokable Cast Classes
 
 ```php
-use BayAreaWebPro\SimpleCsv\SimpleCsv;
+<?php declare(strict_types=1);
 
-SimpleCsv::import(storage_path('collection.csv'))->emptyToNull();
+namespace App\Csv\Casts;
+
+use Carbon\Carbon;
+
+class Timestamps
+{
+    /** Invoked for each row in import collection. */
+    public function __invoke(array $item): array
+    {
+        foreach ($item as $key => $value){
+            if(in_array($key, ['created_at', 'updated_at'])){
+                $item[$key] = Carbon::parse($value);
+            }
+        }
+        return $item;
+    }
+}
 ```
 
 ### Export to File
