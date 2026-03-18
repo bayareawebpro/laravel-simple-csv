@@ -7,7 +7,7 @@ use BayAreaWebPro\SimpleCsv\Casts\NumericValues;
 use Exception;
 use Illuminate\Container\Attributes\Config;
 use Illuminate\Contracts\Support\Arrayable;
-use Illuminate\Support\{Arr, Facades\App, LazyCollection};
+use Illuminate\Support\{Arr, Collection, Facades\App, Facades\File, LazyCollection};
 use SplFileObject;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
@@ -35,7 +35,7 @@ class SimpleCsvService
 
         $this->headers = array_values($this->getLine());
 
-        $casts = array_merge($this->casts, $casts);
+        $casts = $this->makeCasts($casts);
 
         return LazyCollection::make(function () use ($casts) {
             while ($this->file->valid() && $line = $this->getLine()) {
@@ -46,8 +46,8 @@ class SimpleCsvService
 
                 $item = array_combine($this->headers, $line);
 
-                foreach($casts as $caster){
-                    $item = App::call($caster, ['item' => $item]);
+                foreach($casts as $cast){
+                    $item = App::call($cast, ['item' => $item]);
                 }
 
                 yield $item;
@@ -58,7 +58,9 @@ class SimpleCsvService
 
     public function export(iterable $items, string $path): self
     {
-        if (!file_exists($path)) touch($path);
+        if (!File::exists($path)){
+            touch($path);
+        }
         $this->openFileObject($path, 'w');
         $this->writeLines($items);
         $this->resetState();
@@ -97,6 +99,7 @@ class SimpleCsvService
         foreach ($collection as $index => $row) {
 
             if(!Arr::isAssoc($row)){
+                $this->cleanUpFile();
                 throw new Exception("Iterable Item (index: {$index}) is not associative array.");
             }
 
@@ -125,5 +128,22 @@ class SimpleCsvService
     {
         $this->headers = [];
         $this->file = null;
+    }
+
+    protected function makeCasts(array $casts): Collection
+    {
+        return Collection::make($this->casts)
+            ->merge($casts)
+            ->unique()
+            ->map(fn($cast) => App::make($cast));
+    }
+
+    protected function cleanUpFile(): void
+    {
+        if(!$this->file || !File::exists($this->file->getRealPath())){
+            return;
+        }
+
+        File::delete($this->file->getRealPath());
     }
 }
