@@ -132,7 +132,7 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
 public function download(): StreamedResponse
 {
     return SimpleCsv::download(
-        collection: [...], 
+        items: [...], 
         fileName: 'download.csv', 
         headers: ['My-Response-Header' => 'some-value']
     );
