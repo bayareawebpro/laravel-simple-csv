@@ -7,7 +7,7 @@ class NumericValues
     public function __invoke(array $item): array
     {
         foreach ($item as $key => $value){
-            if(is_numeric($value)){
+            if(is_string($value) && is_numeric($value)){
                 if(str_contains($value, '.')){
                     $item[$key] = floatval($value);
                     continue;

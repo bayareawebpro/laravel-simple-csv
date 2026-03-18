@@ -4,7 +4,9 @@ namespace BayAreaWebPro\SimpleCsv\Tests\Unit;
 
 use BayAreaWebPro\SimpleCsv\Casts\EmptyValuesToNull;
 use BayAreaWebPro\SimpleCsv\Casts\NumericValues;
-use BayAreaWebPro\SimpleCsv\LazyCsvCollection;
+use BayAreaWebPro\SimpleCsv\Tests\FakeCast;
+use Illuminate\Config\Repository;
+use Illuminate\Support\Facades\Config;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
 use Illuminate\Support\LazyCollection;
@@ -19,6 +21,15 @@ use BayAreaWebPro\SimpleCsv\SimpleCsv;
 
 class DefaultTest extends TestCase
 {
+    protected function defineEnvironment($app): void
+    {
+        tap($app['config'], function (Repository $config) {
+            $config->set('simple-csv.casts', [
+                FakeCast::class
+            ]);
+        });
+    }
+
     private function getCollectionData($total = 1000): LazyCollection
     {
         return LazyGenerator::make($total, function (\Faker\Generator $faker) {
@@ -26,20 +37,20 @@ class DefaultTest extends TestCase
                 'uuid'  => (string)$faker->uuid,
                 'name'  => (string)$faker->name,
                 'email' => (string)$faker->email,
+                'float' => '3.14',
                 'empty' => null,
-                'float' => 3.14,
-                'int' => 256,
+                'int' => '256',
             ];
         });
     }
 
-    private function getRandomStoragePath()
+    private function getRandomStoragePath(): string
     {
         File::cleanDirectory(storage_path());
-        return storage_path(Str::random(16) . '.csv');
+        return storage_path('test-'.Str::random() . '.csv');
     }
 
-    public function test_import_casts()
+    public function test_import_casts(): void
     {
         $items = $this->getCollectionData(5)->toArray();
 
@@ -48,6 +59,14 @@ class DefaultTest extends TestCase
         SimpleCsv::export($items, $path);
 
         $this->assertFileExists($path);
+
+        $items = SimpleCsv::import($path);
+
+        foreach($items as $item){
+            $this->assertIsString($item['float']);
+            $this->assertEmpty($item['empty']);
+            $this->assertIsString($item['int']);
+        }
 
         $items = SimpleCsv::import($path, [
             EmptyValuesToNull::class,
@@ -61,7 +80,7 @@ class DefaultTest extends TestCase
         }
     }
 
-    public function test_export_from_iterables()
+    public function test_export_from_iterables(): void
     {
         $items = $this->getCollectionData(10)->toArray();
 
@@ -84,7 +103,7 @@ class DefaultTest extends TestCase
         }
     }
 
-    public function test_export_files_and_restore()
+    public function test_export_files_and_restore(): void
     {
         $items = $this->getCollectionData()->toArray();
 
@@ -109,7 +128,7 @@ class DefaultTest extends TestCase
         }
     }
 
-    public function test_can_download_streams()
+    public function test_can_download_streams(): void
     {
         $items = $this->getCollectionData()->toArray();
 

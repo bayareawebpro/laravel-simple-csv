@@ -2,71 +2,72 @@
 
 namespace BayAreaWebPro\SimpleCsv;
 
-use Illuminate\Support\Facades\App;
-use \Iterator;
-use \Exception;
-use Illuminate\Support\Collection;
-use Illuminate\Support\LazyCollection;
+use BayAreaWebPro\SimpleCsv\Casts\EmptyValuesToNull;
+use BayAreaWebPro\SimpleCsv\Casts\NumericValues;
+use Exception;
+use Illuminate\Container\Attributes\Config;
+use Illuminate\Contracts\Support\Arrayable;
+use Illuminate\Support\{Arr, Facades\App, LazyCollection};
+use SplFileObject;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class SimpleCsvService
 {
-    const DELIMITER = ',';
-    const ENCLOSURE = '"';
-    const ESCAPE = '\\';
-
-    protected $delimiter, $enclosure, $escape;
-    protected $headers;
-    protected $file;
+    protected array $headers = [];
+    protected SplFileObject|null $file;
 
     public function __construct(
-        string $delimiter = self::DELIMITER,
-        string $enclosure = self::ENCLOSURE,
-        string $escape = self::ESCAPE
+        #[Config('simple-csv.delimiter',',')] protected string $delimiter,
+        #[Config('simple-csv.enclosure', '"')] protected string $enclosure,
+        #[Config('simple-csv.escape', '\\')] protected string $escape,
+        #[Config('simple-csv.casts', [
+            EmptyValuesToNull::class,
+            NumericValues::class
+        ])] protected array $casts,
     )
     {
-        $this->delimiter = $delimiter;
-        $this->enclosure = $enclosure;
-        $this->escape = $escape;
-        $this->headers = null;
-        $this->file = null;
+        //
     }
 
     public function import(string $path, array $casts = []): LazyCollection
     {
         $this->openFileObject($path);
+
         $this->headers = array_values($this->getLine());
 
-        $instance = LazyCollection::make(function () {
+        $casts = array_merge($this->casts, $casts);
+
+        return LazyCollection::make(function () use ($casts) {
             while ($this->file->valid() && $line = $this->getLine()) {
-                if (!$this->isInValidLine($line)) {
-                    yield array_combine($this->headers, $line);
+
+                if ($this->isEmptyLine($line)) {
+                    continue;
                 }
+
+                $item = array_combine($this->headers, $line);
+
+                foreach($casts as $caster){
+                    $item = App::call($caster, ['item' => $item]);
+                }
+
+                yield $item;
             }
             $this->resetState();
         });
-
-        if(count($casts)){
-            foreach($casts as $caster){
-                $instance = $instance->map(App::make($caster));
-            }
-        }
-
-        return $instance;
     }
 
     protected function resetState(): void
     {
-        $this->headers = null;
+        $this->headers = [];
         $this->file = null;
     }
 
-    protected function isInValidLine(array $line): bool
+    protected function isEmptyLine(array $line): bool
     {
-        return count($line) === 1 && is_null($line[0]);
+        return empty($line) || count($line) === 1 && is_null($line[0]);
     }
 
-    public function export($collection, string $path): self
+    public function export(iterable $collection, string $path): self
     {
         if (!file_exists($path)) touch($path);
         $this->openFileObject($path, 'w');
@@ -75,15 +76,16 @@ class SimpleCsvService
         return $this;
     }
 
-    public function download($collection, string $filename, $headers = []): StreamedResponse
+    public function download(iterable $collection, string $filename, $headers = []): StreamedResponse
     {
         return response()->streamDownload(function () use ($collection) {
             $this->openFileObject('php://output', 'w');
             $this->writeLines($collection);
             $this->resetState();
-        }, $filename, array_merge([
+        }, $filename, [
             'Content-Type' => 'text/csv',
-        ], $headers));
+            ...$headers
+        ]);
     }
 
     protected function getLine(): array
@@ -98,30 +100,30 @@ class SimpleCsvService
 
     protected function flattenRow($entry): array
     {
-        return is_object($entry) && method_exists($entry, 'toArray') ? $entry->toArray() : (array)$entry;
+        if($entry instanceof Arrayable){
+            return $entry->toArray();
+        }
+        return (array)$entry;
     }
 
     protected function openFileObject(string $path, string $mode = 'r'): void
     {
-        $this->file = new \SplFileObject($path, $mode);
+        $this->file = new SplFileObject($path, $mode);
     }
 
-    protected function writeLines($collection): void
+    protected function writeLines(iterable $collection): void
     {
-        if (
-            !$collection instanceof Iterator &&
-            !$collection instanceof Collection &&
-            !$collection instanceof LazyCollection &&
-            !is_array($collection)
-        ) {
-            throw new Exception("Non-Iterable Object cannot be iterated.");
-        }
-        foreach ($collection as $entry) {
+        foreach ($collection as $index => $row) {
+
+            if(!Arr::isAssoc($row)){
+                throw new Exception("Iterable Item (index: {$index}) is not associative array.");
+            }
+
             if (!$this->headers) {
-                $this->headers = array_keys($this->flattenRow($entry));
+                $this->headers = array_keys($this->flattenRow($row));
                 $this->writeLine($this->headers);
             }
-            $this->writeLine(array_values($this->flattenRow($entry)));
+            $this->writeLine(array_values($this->flattenRow($row)));
         }
     }
 }
