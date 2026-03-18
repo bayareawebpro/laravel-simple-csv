@@ -56,17 +56,6 @@ class SimpleCsvService
         });
     }
 
-    protected function resetState(): void
-    {
-        $this->headers = [];
-        $this->file = null;
-    }
-
-    protected function isEmptyLine(array $line): bool
-    {
-        return empty($line) || count($line) === 1 && is_null($line[0]);
-    }
-
     public function export(iterable $items, string $path): self
     {
         if (!file_exists($path)) touch($path);
@@ -88,6 +77,11 @@ class SimpleCsvService
         ]);
     }
 
+    protected function openFileObject(string $path, string $mode = 'r'): void
+    {
+        $this->file = new SplFileObject($path, $mode);
+    }
+
     protected function getLine(): array
     {
         return $this->file->fgetcsv($this->delimiter, $this->enclosure, $this->escape);
@@ -96,19 +90,6 @@ class SimpleCsvService
     protected function writeLine(array $line): void
     {
         $this->file->fputcsv($line, $this->delimiter, $this->enclosure, $this->escape);
-    }
-
-    protected function flattenRow($entry): array
-    {
-        if($entry instanceof Arrayable){
-            return $entry->toArray();
-        }
-        return (array)$entry;
-    }
-
-    protected function openFileObject(string $path, string $mode = 'r'): void
-    {
-        $this->file = new SplFileObject($path, $mode);
     }
 
     protected function writeLines(iterable $collection): void
@@ -125,5 +106,24 @@ class SimpleCsvService
             }
             $this->writeLine(array_values($this->flattenRow($row)));
         }
+    }
+
+    protected function flattenRow($entry): array
+    {
+        if($entry instanceof Arrayable){
+            return $entry->toArray();
+        }
+        return (array)$entry;
+    }
+
+    protected function isEmptyLine(array $line): bool
+    {
+        return empty($line) || count($line) === 1 && is_null($line[0]);
+    }
+
+    protected function resetState(): void
+    {
+        $this->headers = [];
+        $this->file = null;
     }
 }
