@@ -67,22 +67,22 @@ class SimpleCsvService
         return empty($line) || count($line) === 1 && is_null($line[0]);
     }
 
-    public function export(iterable $collection, string $path): self
+    public function export(iterable $items, string $path): self
     {
         if (!file_exists($path)) touch($path);
         $this->openFileObject($path, 'w');
-        $this->writeLines($collection);
+        $this->writeLines($items);
         $this->resetState();
         return $this;
     }
 
-    public function download(iterable $collection, string $filename, $headers = []): StreamedResponse
+    public function download(iterable $items, string $fileName, $headers = []): StreamedResponse
     {
-        return response()->streamDownload(function () use ($collection) {
+        return response()->streamDownload(function () use ($items) {
             $this->openFileObject('php://output', 'w');
-            $this->writeLines($collection);
+            $this->writeLines($items);
             $this->resetState();
-        }, $filename, [
+        }, $fileName, [
             'Content-Type' => 'text/csv',
             ...$headers
         ]);
