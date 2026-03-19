@@ -8,35 +8,29 @@ class SimpleCsvServiceProvider extends ServiceProvider
 {
 
     /**
-     * Register any application services.
-     * @return void
+     * Register package services.
      */
-    public function register()
+    public function register(): void
     {
-        $this->app->bind('simple-csv', function () {
-            return new SimpleCsvService(
-                config('simple-csv.delimiter', SimpleCsvService::DELIMITER),
-                config('simple-csv.enclosure', SimpleCsvService::ENCLOSURE),
-                config('simple-csv.escape', SimpleCsvService::ESCAPE)
-            );
-        });
+        $this->app->bind('simple-csv', SimpleCsvService::class);
+
+        $this->publishes([
+            __DIR__.'/../config/simple-csv.php' => config_path('simple-csv.php'),
+        ], 'simple-csv');
     }
 
     /**
-     * Bootstrap any application services.
-     * @return void
+     * Bootstrap package services.
      */
-    public function boot()
+    public function boot(): void
     {
 
     }
 
     /**
-     * The services provided.
-     *
-     * @return array
+     * The services the package provides.
      */
-    public function provides()
+    public function provides(): array
     {
         return ['simple-csv'];
     }
