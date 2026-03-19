@@ -2,15 +2,8 @@
 
 namespace BayAreaWebPro\SimpleCsv\Tests\Unit;
 
-use BayAreaWebPro\SimpleCsv\{
-    Tests\TestCase,
-    SimpleCsv
-};
-use Exception;
-use Illuminate\Support\{
-    LazyCollection,
-    Facades\File,
-};
+use BayAreaWebPro\SimpleCsv\{Tests\Fakes\FakeModel, Tests\TestCase, SimpleCsv};
+use Illuminate\Support\{Collection, LazyCollection, Facades\File};
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class ImportExportTest extends TestCase
@@ -74,21 +67,19 @@ class ImportExportTest extends TestCase
         }
     }
 
-    public function test_throws_non_associative_array_item()
+    public function test_flattens_arrayable(): void
     {
-        $this->expectException(Exception::class);
-        $this->expectExceptionMessage('Iterable Item (index: 0) is not associative array.');
-        $path = $this->getRandomStoragePath();
+        $collection = Collection::make([
+            new FakeModel(),
+        ]);
 
-        try{
-            SimpleCsv::export([
-                [
-                    // Invalid Item
-                ]
-            ], $path);
-        }catch (Exception $e){
-            $this->assertFileDoesNotExist($path);
-            throw $e;
+        $path = $this->getRandomStoragePath();
+        SimpleCsv::export($collection, $path);
+        $this->assertFileExists($path);
+
+        $fileData = File::get($path);
+        foreach ($collection as $item) {
+            $this->assertStringContainsString($item->uuid, $fileData);
         }
     }
 }

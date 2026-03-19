@@ -58,9 +58,6 @@ class SimpleCsvService
 
     public function export(iterable $items, string $path): self
     {
-        if (!File::exists($path)){
-            touch($path);
-        }
         $this->openFileObject($path, 'w');
         $this->writeLines($items);
         $this->resetState();
@@ -96,13 +93,7 @@ class SimpleCsvService
 
     protected function writeLines(iterable $collection): void
     {
-        foreach ($collection as $index => $row) {
-
-            if(!Arr::isAssoc($row)){
-                $this->cleanUpFile();
-                throw new Exception("Iterable Item (index: {$index}) is not associative array.");
-            }
-
+        foreach ($collection as $row) {
             if (!$this->headers) {
                 $this->headers = array_keys($this->flattenRow($row));
                 $this->writeLine($this->headers);

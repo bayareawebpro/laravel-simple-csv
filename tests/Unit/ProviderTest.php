@@ -2,8 +2,8 @@
 
 namespace BayAreaWebPro\SimpleCsv\Tests\Unit;
 
-use BayAreaWebPro\SimpleCsv\SimpleCsvService;
 use BayAreaWebPro\SimpleCsv\SimpleCsvServiceProvider;
+use BayAreaWebPro\SimpleCsv\SimpleCsvService;
 use BayAreaWebPro\SimpleCsv\Tests\TestCase;
 
 class ProviderTest extends TestCase
