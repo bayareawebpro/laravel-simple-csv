@@ -9,11 +9,13 @@
 > https://packagist.org/packages/bayareawebpro/laravel-simple-csv
 
 ## Features
+
 - Import to LazyCollection.
 - Export from Collection, LazyCollection, Generator, Array, Iterable.
 - Low(er) Memory Consumption by use of Generators.
 
 ## Installation
+
 Require the package and Laravel will Auto-Discover the Service Provider.
 
 ```
@@ -30,7 +32,6 @@ artisan vendor:publish --tag=simple-csv
 
 ## Import Usage
 
-
 ```php
 use BayAreaWebPro\SimpleCsv\SimpleCsv;
 
@@ -39,8 +40,8 @@ $lazyCollection = SimpleCsv::import(storage_path('collection.csv'));
 
 ### Formatting Casts
 
-Invokable classes can be passed to the import method allowing you to customize 
-how each row is processed. 
+Invokable classes can be passed to the import method allowing you to customize
+how each row is processed.
 
 ```php
 use BayAreaWebPro\SimpleCsv\SimpleCsv;
@@ -53,9 +54,9 @@ $lazyCollection = SimpleCsv::import(storage_path('collection.csv'), [
 
 ### Default Casts
 
-Two cast classes to handle numerics and null values are configured
-to be applied by default and can be overridden in the config file.  
-Casts passed to the import method will be merged with defaults.
+Two cast classes to handle numerics and null values are configured to be 
+by default and can be overridden in the config file. Casts passed to the 
+import method will be merged with defaults.
 
 ```php
 use BayAreaWebPro\SimpleCsv\Casts\NumericValues;
@@ -76,7 +77,17 @@ use Carbon\Carbon;
 
 class Timestamps
 {
-    /** Invoked for each row in import collection. */
+    /** 
+     * Inject services by adding a constructor. 
+     */
+    public function __construct(public Repository $config)
+    {
+        // 
+    }
+    
+    /** 
+     * Invoked for each row in import collection. 
+     */
     public function __invoke(array $item): array
     {
         foreach ($item as $key => $value){
@@ -90,7 +101,6 @@ class Timestamps
 ```
 
 ## Export Usage
-
 
 ```php
 use BayAreaWebPro\SimpleCsv\SimpleCsv;
@@ -124,7 +134,7 @@ SimpleCsv::export(
 
 You can simply return the service from a route to create a steamed download.
 
-> Optional response headers can be passed as the 3rd argument. 
+> Optional response headers can be passed as the 3rd argument.
 
 ```php
 use BayAreaWebPro\SimpleCsv\SimpleCsv;
@@ -141,8 +151,9 @@ public function download(): StreamedResponse
 ```
 
 ## File Splitting Utility
-A file splitting utility has been included that will break large CSV files into chunks 
-(while retaining column headers) which you can move/delete after importing. 
+
+A file splitting utility has been included that will break large CSV files into chunks
+(while retaining column headers) which you can move/delete after importing.
 This can help with automating the import of large data sets.
 
 Tip: Find your Bash Shell Binary Path: `which sh`
