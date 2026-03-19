@@ -54,9 +54,9 @@ $lazyCollection = SimpleCsv::import(storage_path('collection.csv'), [
 
 ### Default Casts
 
-Two cast classes to handle numerics and null values are configured to be 
-by default and can be overridden in the config file. Casts passed to the 
-import method will be merged with defaults.
+Two cast classes to handle numerics and null values are configured by default 
+and can be overridden in the config file. Casts passed to the import method 
+will be merged with defaults.
 
 ```php
 use BayAreaWebPro\SimpleCsv\Casts\NumericValues;
