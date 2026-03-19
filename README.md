@@ -87,7 +87,7 @@ class Timestamps
     }
     
     /** 
-     * Invoked for each row in import collection. 
+     * Invoked for each row. 
      */
     public function __invoke(array $item): array
     {
