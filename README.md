@@ -74,6 +74,7 @@ method when required.
 namespace App\Csv\Casts;
 
 use Carbon\Carbon;
+use Illuminate\Config\Repository;
 
 class Timestamps
 {
