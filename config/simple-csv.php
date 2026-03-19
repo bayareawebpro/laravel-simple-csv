@@ -35,7 +35,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | CSV Cast Classes
+    | Default CSV Cast Classes
     |--------------------------------------------------------------------------
     |
     | Here you may specify the default classes for casting values. Casts
