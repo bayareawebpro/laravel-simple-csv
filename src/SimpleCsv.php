@@ -6,6 +6,7 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
 
 /**
  * The SimpleCsv Service Facade
+ * @see \BayAreaWebPro\SimpleCsv\SimpleCsvService
  * @method static StreamedResponse download(iterable $items, string $fileName, array $headers = [])
  * @method static void export(iterable $items, string $path)
  * @method static LazyCollection import(string $path, array $casts = [])

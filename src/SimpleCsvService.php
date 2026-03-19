@@ -4,10 +4,9 @@ namespace BayAreaWebPro\SimpleCsv;
 
 use BayAreaWebPro\SimpleCsv\Casts\EmptyValuesToNull;
 use BayAreaWebPro\SimpleCsv\Casts\NumericValues;
-use Exception;
 use Illuminate\Container\Attributes\Config;
 use Illuminate\Contracts\Support\Arrayable;
-use Illuminate\Support\{Arr, Collection, Facades\App, Facades\File, LazyCollection};
+use Illuminate\Support\{Collection, Facades\App, Facades\File, LazyCollection};
 use SplFileObject;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
