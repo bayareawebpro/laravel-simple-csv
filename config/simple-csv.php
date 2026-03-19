@@ -38,7 +38,9 @@ return [
     | CSV Cast Classes
     |--------------------------------------------------------------------------
     |
-    | Here you may specify the classes for casting values.
+    | Here you may specify the default classes for casting values. Casts
+    | specified in the import method will be merged with these defaults
+    | to create a unique set of casts for the operation.
     |
     */
 
